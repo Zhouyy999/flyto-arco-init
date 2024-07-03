@@ -7,6 +7,8 @@
 import { vitePluginForArco } from '@arco-plugins/vite-vue'
 
 export default function configArcoStyleImportPlugin() {
-  const arcoResolverPlugin = vitePluginForArco({})
+  const arcoResolverPlugin = vitePluginForArco({
+    theme: '@arco-themes/vue-flyto',
+  })
   return arcoResolverPlugin
 }
