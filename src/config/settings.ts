@@ -1,0 +1,17 @@
+export default {
+  theme: 'light',
+  colorWeak: false,
+  navbar: true,
+  menu: true,
+  topMenu: false,
+  hideMenu: false,
+  menuCollapse: false,
+  footer: true,
+  themeColor: '#165DFF',
+  menuWidth: 240,
+  globalSettings: true,
+  device: 'desktop',
+  tabBar: true,
+  menuFromServer: false,
+  serverMenu: [],
+}
