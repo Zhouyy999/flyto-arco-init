@@ -100,7 +100,9 @@
     return list.length ? `(${list.length})` : ``
   }
   const handleItemClick = (items: MessageListType) => {
-    if (renderList.value.length) readMessage([...items])
+    if (renderList.value.length) {
+      readMessage([...items])
+    }
   }
   const emptyList = () => {
     messageData.messageList = []

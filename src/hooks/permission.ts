@@ -20,8 +20,9 @@ export default function usePermission() {
           firstElement?.meta?.roles?.find((el: string[]) => {
             return el.includes('*') || el.includes(role)
           })
-        )
+        ) {
           return { name: firstElement.name }
+        }
         if (firstElement?.children) {
           cloneRouters.push(...firstElement.children)
         }

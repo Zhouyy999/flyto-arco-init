@@ -29,7 +29,9 @@ export default function setupPermissionGuard(router: Router) {
       let exist = false
       while (serverMenuConfig.length && !exist) {
         const element = serverMenuConfig.shift()
-        if (element?.name === to.name) exist = true
+        if (element?.name === to.name) {
+          exist = true
+        }
 
         if (element?.children) {
           serverMenuConfig.push(
@@ -39,11 +41,14 @@ export default function setupPermissionGuard(router: Router) {
       }
       if (exist && permissionsAllow) {
         next()
-      } else next(NOT_FOUND)
+      } else {
+        next(NOT_FOUND)
+      }
     } else {
       // eslint-disable-next-line no-lonely-if
-      if (permissionsAllow) next()
-      else {
+      if (permissionsAllow) {
+        next()
+      } else {
         const destination =
           Permission.findFirstPermissionRoute(appRoutes, userStore.role) ||
           NOT_FOUND

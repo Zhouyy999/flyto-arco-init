@@ -18,7 +18,9 @@
       const { menuTree } = useMenuTree()
       const collapsed = computed({
         get() {
-          if (appStore.device === 'desktop') return appStore.menuCollapse
+          if (appStore.device === 'desktop') {
+            return appStore.menuCollapse
+          }
           return false
         },
         set(value: boolean) {
@@ -64,7 +66,10 @@
           }
         }
         menuTree.value.forEach((el: RouteRecordRaw) => {
-          if (isFind) return // Performance optimization
+          if (isFind) {
+            // Performance optimization
+            return
+          }
           backtrack(el, [el.name as string])
         })
         return result
@@ -85,8 +90,9 @@
         }
       }, true)
       const setCollapse = (val: boolean) => {
-        if (appStore.device === 'desktop')
+        if (appStore.device === 'desktop') {
           appStore.updateSettings({ menuCollapse: val })
+        }
       }
 
       const renderSubMenu = () => {

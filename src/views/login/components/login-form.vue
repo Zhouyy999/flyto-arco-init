@@ -97,7 +97,9 @@
     errors: Record<string, ValidatedError> | undefined
     values: Record<string, any>
   }) => {
-    if (loading.value) return
+    if (loading.value) {
+      return
+    }
     if (!errors) {
       setLoading(true)
       try {

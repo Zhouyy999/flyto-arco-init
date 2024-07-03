@@ -20,7 +20,9 @@ export default function useMenuTree() {
       return (a.meta.order || 0) - (b.meta.order || 0)
     })
     function travel(_routes: RouteRecordRaw[], layer: number) {
-      if (!_routes) return null
+      if (!_routes) {
+        return null
+      }
 
       const collector: any = _routes.map(element => {
         // no access

@@ -61,8 +61,12 @@
         axisLabel: {
           color: '#4E5969',
           formatter(value: number, idx: number) {
-            if (idx === 0) return ''
-            if (idx === xAxis.value.length - 1) return ''
+            if (idx === 0) {
+              return ''
+            }
+            if (idx === xAxis.value.length - 1) {
+              return ''
+            }
             return `${value}`
           },
         },
@@ -75,8 +79,12 @@
         splitLine: {
           show: true,
           interval: (idx: number) => {
-            if (idx === 0) return false
-            if (idx === xAxis.value.length - 1) return false
+            if (idx === 0) {
+              return false
+            }
+            if (idx === xAxis.value.length - 1) {
+              return false
+            }
             return true
           },
           lineStyle: {
@@ -98,7 +106,9 @@
         },
         axisLabel: {
           formatter(value: any, idx: number) {
-            if (idx === 0) return value
+            if (idx === 0) {
+              return value
+            }
             return `${value}k`
           },
         },

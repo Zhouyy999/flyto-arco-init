@@ -83,14 +83,17 @@
     return { ...paddingLeft, ...paddingTop }
   })
   const setCollapsed = (val: boolean) => {
-    if (!isInit.value) return // for page initialization menu state problem
+    if (!isInit.value) {
+      return
+    } // for page initialization menu state problem
     appStore.updateSettings({ menuCollapse: val })
   }
   watch(
     () => userStore.role,
     roleValue => {
-      if (roleValue && !permission.accessRouter(route))
+      if (roleValue && !permission.accessRouter(route)) {
         router.push({ name: 'notFound' })
+      }
     },
   )
   const drawerVisible = ref(false)
