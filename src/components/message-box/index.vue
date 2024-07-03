@@ -23,7 +23,6 @@
 
 <script lang="ts" setup>
   import { ref, reactive, toRefs, computed } from 'vue'
-  import { useI18n } from 'vue-i18n'
   import {
     queryMessageList,
     setMessageStatus,
@@ -40,7 +39,6 @@
   }
   const { loading, setLoading } = useLoading(true)
   const messageType = ref('message')
-  const { t } = useI18n()
   const messageData = reactive<{
     renderList: MessageRecord[]
     messageList: MessageRecord[]
