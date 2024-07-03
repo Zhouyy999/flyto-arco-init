@@ -16,24 +16,22 @@
 
 <script lang="ts" setup>
   import { computed } from 'vue'
-  import { useI18n } from 'vue-i18n'
   import bannerImage from '@/assets/images/login-banner.png'
 
-  const { t } = useI18n()
   const carouselItem = computed(() => [
     {
-      slogan: t('login.banner.slogan1'),
-      subSlogan: t('login.banner.subSlogan1'),
+      slogan: '当前项目的slogan1',
+      subSlogan: '这段slogan的副标题1',
       image: bannerImage,
     },
     {
-      slogan: t('login.banner.slogan2'),
-      subSlogan: t('login.banner.subSlogan2'),
+      slogan: '当前项目的slogan2',
+      subSlogan: '这段slogan的副标题2',
       image: bannerImage,
     },
     {
-      slogan: t('login.banner.slogan3'),
-      subSlogan: t('login.banner.subSlogan3'),
+      slogan: '当前项目的slogan3',
+      subSlogan: '这段slogan的副标题3',
       image: bannerImage,
     },
   ])

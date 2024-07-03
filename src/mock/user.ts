@@ -92,7 +92,7 @@ setupMock({
               path: 'https://arco.design',
               name: 'arcoWebsite',
               meta: {
-                locale: 'menu.arcoWebsite',
+                locale: 'Arco Design',
                 requiresAuth: true,
               },
             },
