@@ -28,12 +28,12 @@
       type: [String, Boolean, Number],
       default: '',
     },
-  });
-  const emit = defineEmits(['inputChange']);
+  })
+  const emit = defineEmits(['inputChange'])
   const handleChange = (value: unknown) => {
     emit('inputChange', {
       value,
       key: props.name,
-    });
-  };
+    })
+  }
 </script>

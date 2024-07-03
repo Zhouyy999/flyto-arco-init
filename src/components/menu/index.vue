@@ -1,102 +1,102 @@
 <script lang="tsx">
-  import { defineComponent, ref, h, compile, computed } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import { useRoute, useRouter, RouteRecordRaw } from 'vue-router';
-  import type { RouteMeta } from 'vue-router';
-  import { useAppStore } from '@/store';
-  import { listenerRouteChange } from '@/utils/route-listener';
-  import { openWindow, regexUrl } from '@/utils';
-  import useMenuTree from './use-menu-tree';
+  import { defineComponent, ref, h, compile, computed } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import { useRoute, useRouter, RouteRecordRaw } from 'vue-router'
+  import type { RouteMeta } from 'vue-router'
+  import { useAppStore } from '@/store'
+  import { listenerRouteChange } from '@/utils/route-listener'
+  import { openWindow, regexUrl } from '@/utils'
+  import useMenuTree from './use-menu-tree'
 
   export default defineComponent({
     emit: ['collapse'],
     setup() {
-      const { t } = useI18n();
-      const appStore = useAppStore();
-      const router = useRouter();
-      const route = useRoute();
-      const { menuTree } = useMenuTree();
+      const { t } = useI18n()
+      const appStore = useAppStore()
+      const router = useRouter()
+      const route = useRoute()
+      const { menuTree } = useMenuTree()
       const collapsed = computed({
         get() {
-          if (appStore.device === 'desktop') return appStore.menuCollapse;
-          return false;
+          if (appStore.device === 'desktop') return appStore.menuCollapse
+          return false
         },
         set(value: boolean) {
-          appStore.updateSettings({ menuCollapse: value });
+          appStore.updateSettings({ menuCollapse: value })
         },
-      });
+      })
 
-      const topMenu = computed(() => appStore.topMenu);
-      const openKeys = ref<string[]>([]);
-      const selectedKey = ref<string[]>([]);
+      const topMenu = computed(() => appStore.topMenu)
+      const openKeys = ref<string[]>([])
+      const selectedKey = ref<string[]>([])
 
       const goto = (item: RouteRecordRaw) => {
         // Open external link
         if (regexUrl.test(item.path)) {
-          openWindow(item.path);
-          selectedKey.value = [item.name as string];
-          return;
+          openWindow(item.path)
+          selectedKey.value = [item.name as string]
+          return
         }
         // Eliminate external link side effects
-        const { hideInMenu, activeMenu } = item.meta as RouteMeta;
+        const { hideInMenu, activeMenu } = item.meta as RouteMeta
         if (route.name === item.name && !hideInMenu && !activeMenu) {
-          selectedKey.value = [item.name as string];
-          return;
+          selectedKey.value = [item.name as string]
+          return
         }
         // Trigger router change
         router.push({
           name: item.name,
-        });
-      };
+        })
+      }
       const findMenuOpenKeys = (target: string) => {
-        const result: string[] = [];
-        let isFind = false;
+        const result: string[] = []
+        let isFind = false
         const backtrack = (item: RouteRecordRaw, keys: string[]) => {
           if (item.name === target) {
-            isFind = true;
-            result.push(...keys);
-            return;
+            isFind = true
+            result.push(...keys)
+            return
           }
           if (item.children?.length) {
-            item.children.forEach((el) => {
-              backtrack(el, [...keys, el.name as string]);
-            });
+            item.children.forEach(el => {
+              backtrack(el, [...keys, el.name as string])
+            })
           }
-        };
+        }
         menuTree.value.forEach((el: RouteRecordRaw) => {
-          if (isFind) return; // Performance optimization
-          backtrack(el, [el.name as string]);
-        });
-        return result;
-      };
-      listenerRouteChange((newRoute) => {
-        const { requiresAuth, activeMenu, hideInMenu } = newRoute.meta;
+          if (isFind) return // Performance optimization
+          backtrack(el, [el.name as string])
+        })
+        return result
+      }
+      listenerRouteChange(newRoute => {
+        const { requiresAuth, activeMenu, hideInMenu } = newRoute.meta
         if (requiresAuth && (!hideInMenu || activeMenu)) {
           const menuOpenKeys = findMenuOpenKeys(
-            (activeMenu || newRoute.name) as string
-          );
+            (activeMenu || newRoute.name) as string,
+          )
 
-          const keySet = new Set([...menuOpenKeys, ...openKeys.value]);
-          openKeys.value = [...keySet];
+          const keySet = new Set([...menuOpenKeys, ...openKeys.value])
+          openKeys.value = [...keySet]
 
           selectedKey.value = [
             activeMenu || menuOpenKeys[menuOpenKeys.length - 1],
-          ];
+          ]
         }
-      }, true);
+      }, true)
       const setCollapse = (val: boolean) => {
         if (appStore.device === 'desktop')
-          appStore.updateSettings({ menuCollapse: val });
-      };
+          appStore.updateSettings({ menuCollapse: val })
+      }
 
       const renderSubMenu = () => {
         function travel(_route: RouteRecordRaw[], nodes = []) {
           if (_route) {
-            _route.forEach((element) => {
+            _route.forEach(element => {
               // This is demo, modify nodes as needed
               const icon = element?.meta?.icon
                 ? () => h(compile(`<${element?.meta?.icon}/>`))
-                : null;
+                : null
               const node =
                 element?.children && element?.children.length !== 0 ? (
                   <a-sub-menu
@@ -116,14 +116,14 @@
                   >
                     {t(element?.meta?.locale || '')}
                   </a-menu-item>
-                );
-              nodes.push(node as never);
-            });
+                )
+              nodes.push(node as never)
+            })
           }
-          return nodes;
+          return nodes
         }
-        return travel(menuTree.value);
-      };
+        return travel(menuTree.value)
+      }
 
       return () => (
         <a-menu
@@ -140,9 +140,9 @@
         >
           {renderSubMenu()}
         </a-menu>
-      );
+      )
     },
-  });
+  })
 </script>
 
 <style lang="less" scoped>

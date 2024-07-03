@@ -71,8 +71,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType } from 'vue';
-  import { MessageRecord, MessageListType } from '@/api/message';
+  import { PropType } from 'vue'
+  import { MessageRecord, MessageListType } from '@/api/message'
 
   const props = defineProps({
     renderList: {
@@ -83,18 +83,18 @@
       type: Number,
       default: 0,
     },
-  });
-  const emit = defineEmits(['itemClick']);
+  })
+  const emit = defineEmits(['itemClick'])
   const allRead = () => {
-    emit('itemClick', [...props.renderList]);
-  };
+    emit('itemClick', [...props.renderList])
+  }
 
   const onItemClick = (item: MessageRecord) => {
     if (!item.status) {
-      emit('itemClick', [item]);
+      emit('itemClick', [item])
     }
-  };
-  const showMax = 3;
+  }
+  const showMax = 3
 </script>
 
 <style scoped lang="less">

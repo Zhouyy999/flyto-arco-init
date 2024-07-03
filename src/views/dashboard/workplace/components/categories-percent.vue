@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-  import useLoading from '@/hooks/loading';
-  import useChartOption from '@/hooks/chart-option';
+  import useLoading from '@/hooks/loading'
+  import useChartOption from '@/hooks/chart-option'
 
-  const { loading } = useLoading();
-  const { chartOption } = useChartOption((isDark) => {
+  const { loading } = useLoading()
+  const { chartOption } = useChartOption(isDark => {
     // echarts support https://echarts.apache.org/zh/theme-builder.html
     // It's not used here
     return {
@@ -107,8 +107,8 @@
           ],
         },
       ],
-    };
-  });
+    }
+  })
 </script>
 
 <style scoped lang="less"></style>
