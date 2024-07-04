@@ -9,7 +9,7 @@ export default {
   footer: true,
   themeColor: '#165DFF',
   menuWidth: 240,
-  globalSettings: true,
+  globalSettings: false,
   device: 'desktop',
   tabBar: true,
   menuFromServer: false,

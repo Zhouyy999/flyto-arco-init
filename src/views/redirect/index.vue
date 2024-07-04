@@ -8,7 +8,8 @@
   const router = useRouter()
   const route = useRoute()
 
-  const gotoPath = route.params.path as string
+  const paths = route.params.path
+  const gotoPath = typeof paths === 'string' ? paths : paths[0]
 
   router.replace({ path: gotoPath })
 </script>
