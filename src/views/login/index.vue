@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <div class="logo">
-      <img alt="logo" src="/public/logo/flyto-icon.png" style="width: 30px" />
+      <img
+        alt="logo"
+        src="/src/assets/logo/flyto-icon.png"
+        style="width: 30px"
+      />
       <div class="logo-text">飞驼xxxx</div>
     </div>
     <LoginBanner />

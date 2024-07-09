@@ -17,8 +17,11 @@ export default function setupUserLoginInfoGuard(router: Router) {
       const userStore = useUserStore()
 
       try {
-        // 先获取用户信息，查看登录是否失效
-        await userStore.updateUserInfo()
+        // 在未登录的情况下，直接从服务端获取一次用户信息（通过cookie存储的用户数据），查看登录是否失效
+        if (!isLogin()) {
+          await userStore.updateUserInfo()
+        }
+        // 依然未登录，抛出异常，跳转登录
         if (!isLogin()) {
           throw new Error('not lpgin')
         }

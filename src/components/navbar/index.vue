@@ -2,7 +2,11 @@
   <div class="navbar">
     <div class="left-side">
       <a-space>
-        <img alt="logo" src="/public/logo/flyto-icon.png" style="width: 30px" />
+        <img
+          alt="logo"
+          src="/src/assets/logo/flyto-icon.png"
+          style="width: 30px"
+        />
         <a-typography-title
           :style="{ margin: 0, fontSize: '18px' }"
           :heading="5"
@@ -112,7 +116,10 @@
             :size="32"
             :style="{ marginRight: '8px', cursor: 'pointer' }"
           >
-            <img alt="avatar" :src="avatar || './public/logo/flyto-icon.png'" />
+            <img
+              alt="avatar"
+              :src="avatar || '/src/assets/logo/flyto-icon.png'"
+            />
           </a-avatar>
           <template #content>
             <a-doption>

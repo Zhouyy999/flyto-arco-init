@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'
 
-import { LOGIN_ROUTE, MAIN_ROUTE, NOT_FOUND_ROUTE } from './routes'
+import { LOGIN_ROUTE, MAIN_ROUTE } from './routes'
 import createRouteGuard from './guard'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [MAIN_ROUTE, LOGIN_ROUTE, NOT_FOUND_ROUTE],
+  routes: [MAIN_ROUTE, LOGIN_ROUTE],
   scrollBehavior() {
     return { top: 0 }
   },

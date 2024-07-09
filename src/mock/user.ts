@@ -6,28 +6,31 @@ import setupMock, {
 
 import { MockParams } from '@/types/mock'
 
+const userInfo = {
+  sysno: 1000,
+  name: 'admin',
+  avatar: '',
+  email: 'wangliqun@email.com',
+  job: 'frontend',
+  jobName: '前端艺术家',
+  organization: 'Frontend',
+  organizationName: '前端',
+  location: 'beijing',
+  locationName: '北京',
+  introduction: '人潇洒，性温存',
+  personalWebsite: 'https://www.arco.design',
+  phone: '150****0000',
+  registrationDate: '2013-05-10 12:10:00',
+  accountId: '15012312300',
+  certification: 1,
+  role: 'role',
+}
+
 setupMock({
   setup() {
     // 用户信息
     Mock.mock(new RegExp('/api/user/info'), () => {
-      return successResponseWrap({
-        name: 'admin',
-        avatar: '',
-        email: 'wangliqun@email.com',
-        job: 'frontend',
-        jobName: '前端艺术家',
-        organization: 'Frontend',
-        organizationName: '前端',
-        location: 'beijing',
-        locationName: '北京',
-        introduction: '人潇洒，性温存',
-        personalWebsite: 'https://www.arco.design',
-        phone: '150****0000',
-        registrationDate: '2013-05-10 12:10:00',
-        accountId: '15012312300',
-        certification: 1,
-        role: 'role',
-      })
+      return successResponseWrap(userInfo)
     })
 
     // 登录
@@ -41,9 +44,7 @@ setupMock({
       }
       if (username === 'admin' && password === 'admin') {
         window.localStorage.setItem('userRole', 'admin')
-        return successResponseWrap({
-          token: '12345',
-        })
+        return successResponseWrap(userInfo)
       }
       if (username === 'user' && password === 'user') {
         window.localStorage.setItem('userRole', 'user')
@@ -68,8 +69,31 @@ setupMock({
           meta: {
             icon: 'icon-home',
             locale: '主页',
-            requiresAuth: true,
           },
+        },
+        {
+          name: 'auth',
+          meta: {
+            icon: 'icon-home',
+            locale: '测试权限页面',
+          },
+          children: [
+            {
+              path: '/auth1/mgt',
+              name: 'auth1',
+              meta: {
+                locale: '权限页面1',
+              },
+            },
+            // {
+            //   path: '/auth1/detail',
+            //   name: 'authDetail',
+            //   meta: {
+            //     hideInMenu: true,
+            //     locale: '权限页面明细',
+            //   },
+            // },
+          ],
         },
       ]
       return successResponseWrap(menuList)

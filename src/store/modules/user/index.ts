@@ -35,8 +35,6 @@ export default defineStore('user', () => {
   }
   async function updateUserInfo() {
     const data = (await getUserInfo()).data as UserInfo
-    data.sysno = 111
-
     setUserInfo(data)
   }
 
@@ -47,76 +45,3 @@ export default defineStore('user', () => {
     updateUserInfo,
   }
 })
-
-// const useUserStore1 = defineStore('user', {
-//   state: (): UserInfo => ({
-//     sysno: 0,
-//     name: undefined,
-//     avatar: undefined,
-//     job: undefined,
-//     organization: undefined,
-//     location: undefined,
-//     email: undefined,
-//     introduction: undefined,
-//     personalWebsite: undefined,
-//     jobName: undefined,
-//     organizationName: undefined,
-//     locationName: undefined,
-//     phone: undefined,
-//     registrationDate: undefined,
-//     accountId: undefined,
-//     certification: undefined,
-//     role: '',
-//   }),
-
-//   getters: {
-//     userInfo(state: UserInfo): UserInfo {
-//       return { ...state }
-//     },
-//   },
-
-//   actions: {
-//     // Set user's information
-//     setInfo(partial: Partial<UserInfo>) {
-//       this.$patch(partial)
-//     },
-
-//     // Reset user's information
-//     resetInfo() {
-//       this.$reset()
-//     },
-
-//     // Get user's information
-//     async info() {
-//       const res = await getUserInfo()
-
-//       this.setInfo(res.data)
-//     },
-
-//     // Login
-//     async login(loginForm: LoginData) {
-//       try {
-//         const res = await userLogin(loginForm)
-//         setToken(res.data.token)
-//       } catch (err) {
-//         clearToken()
-//         throw err
-//       }
-//     },
-//     logoutCallBack() {
-//       const appStore = useAppStore()
-//       this.resetInfo()
-//       clearToken()
-//       removeRouteListener()
-//       appStore.clearServerMenu()
-//     },
-//     // Logout
-//     async logout() {
-//       try {
-//         await userLogout()
-//       } finally {
-//         this.logoutCallBack()
-//       }
-//     },
-//   },
-// })
