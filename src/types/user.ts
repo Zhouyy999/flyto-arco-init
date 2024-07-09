@@ -1,5 +1,8 @@
 export type RoleType = '' | '*' | 'admin' | 'user'
-export interface UserState {
+
+export interface UserInfo {
+  sysno: number
+  role: RoleType
   name?: string
   avatar?: string
   job?: string
@@ -15,5 +18,4 @@ export interface UserState {
   registrationDate?: string
   accountId?: string
   certification?: number
-  role: RoleType
 }

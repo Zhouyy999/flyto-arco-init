@@ -1,24 +1,40 @@
 import { useRouter } from 'vue-router'
-import { Message } from '@arco-design/web-vue'
+import { type LoginData } from '@types'
+import { login as userLogin, logout as userLogout } from '@/api/user'
 
-import { useUserStore } from '@/store'
+import { useUserStore, useAppStore } from '@/store'
+import { removeRouteListener } from '@/utils/route-listener'
 
 export default function useUser() {
   const router = useRouter()
   const userStore = useUserStore()
-  const logout = async (logoutTo?: string) => {
-    await userStore.logout()
-    const currentRoute = router.currentRoute.value
-    Message.success('登出成功')
-    router.push({
-      name: logoutTo && typeof logoutTo === 'string' ? logoutTo : 'login',
-      query: {
-        ...router.currentRoute.value.query,
-        redirect: currentRoute.name as string,
-      },
-    })
+  const appStore = useAppStore()
+
+  async function login(loginForm: LoginData) {
+    try {
+      const res = await userLogin(loginForm)
+      userStore.setUserInfo(res.data)
+    } catch (err) {
+      userStore.resetUserInfo()
+      throw err
+    }
   }
+  async function logout() {
+    try {
+      await userLogout()
+    } finally {
+      userStore.resetUserInfo()
+      removeRouteListener()
+      appStore.clearServerMenu()
+
+      router.push({
+        name: 'login',
+      })
+    }
+  }
+
   return {
+    login,
     logout,
   }
 }

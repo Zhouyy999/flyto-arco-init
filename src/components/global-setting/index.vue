@@ -49,12 +49,6 @@
       defaultVal: appStore.topMenu,
     },
     { name: '底部', key: 'footer', defaultVal: appStore.footer },
-    { name: '多页签', key: 'tabBar', defaultVal: appStore.tabBar },
-    {
-      name: '菜单来源于后台',
-      key: 'menuFromServer',
-      defaultVal: appStore.menuFromServer,
-    },
     {
       name: '菜单宽度 (px)',
       key: 'menuWidth',

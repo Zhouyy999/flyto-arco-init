@@ -10,7 +10,13 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@types": ["src/types"],
+      "@types/*": ["src/types/*"],
+      "@store": ["src/store"],
+      "@store/*": ["src/store/*"],
+      "@hooks": ["src/hooks"],
+      "@hooks/*": ["src/hooks/*"]
     },
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,

@@ -5,37 +5,29 @@ import setupMock, {
 } from '@/utils/setup-mock'
 
 import { MockParams } from '@/types/mock'
-import { isLogin } from '@/utils/auth'
 
 setupMock({
   setup() {
-    // Mock.XHR.prototype.withCredentials = true;
-
     // 用户信息
     Mock.mock(new RegExp('/api/user/info'), () => {
-      if (isLogin()) {
-        const role = window.localStorage.getItem('userRole') || 'admin'
-        return successResponseWrap({
-          name: 'admin',
-          avatar:
-            '//lf1-xgcdn-tos.pstatp.com/obj/vcloud/vadmin/start.8e0e4855ee346a46ccff8ff3e24db27b.png',
-          email: 'wangliqun@email.com',
-          job: 'frontend',
-          jobName: '前端艺术家',
-          organization: 'Frontend',
-          organizationName: '前端',
-          location: 'beijing',
-          locationName: '北京',
-          introduction: '人潇洒，性温存',
-          personalWebsite: 'https://www.arco.design',
-          phone: '150****0000',
-          registrationDate: '2013-05-10 12:10:00',
-          accountId: '15012312300',
-          certification: 1,
-          role,
-        })
-      }
-      return failResponseWrap(null, '未登录', 50008)
+      return successResponseWrap({
+        name: 'admin',
+        avatar: '',
+        email: 'wangliqun@email.com',
+        job: 'frontend',
+        jobName: '前端艺术家',
+        organization: 'Frontend',
+        organizationName: '前端',
+        location: 'beijing',
+        locationName: '北京',
+        introduction: '人潇洒，性温存',
+        personalWebsite: 'https://www.arco.design',
+        phone: '150****0000',
+        registrationDate: '2013-05-10 12:10:00',
+        accountId: '15012312300',
+        certification: 1,
+        role: 'role',
+      })
     })
 
     // 登录
@@ -71,32 +63,13 @@ setupMock({
     Mock.mock(new RegExp('/api/user/menu'), () => {
       const menuList = [
         {
-          path: '/dashboard',
-          name: 'dashboard',
+          path: '/main',
+          name: 'main',
           meta: {
-            locale: '仪表盘',
+            icon: 'icon-home',
+            locale: '主页',
             requiresAuth: true,
-            icon: 'icon-dashboard',
-            order: 1,
           },
-          children: [
-            {
-              path: 'workplace',
-              name: 'Workplace',
-              meta: {
-                locale: '工作台',
-                requiresAuth: true,
-              },
-            },
-            {
-              path: 'https://arco.design',
-              name: 'arcoWebsite',
-              meta: {
-                locale: 'Arco Design',
-                requiresAuth: true,
-              },
-            },
-          ],
         },
       ]
       return successResponseWrap(menuList)

@@ -1,43 +1,33 @@
-import type { Router, LocationQueryRaw } from 'vue-router'
+import type { Router } from 'vue-router'
 import NProgress from 'nprogress' // progress bar
 
 import { useUserStore } from '@/store'
 import { isLogin } from '@/utils/auth'
+import useUser from '@/hooks/user'
 
 export default function setupUserLoginInfoGuard(router: Router) {
-  router.beforeEach(async (to, from, next) => {
+  router.beforeEach(async (to, _from, next) => {
     NProgress.start()
-    const userStore = useUserStore()
-    if (isLogin()) {
-      if (userStore.role) {
-        next()
-      } else {
-        try {
-          await userStore.info()
-          next()
-        } catch (error) {
-          await userStore.logout()
-          next({
-            name: 'login',
-            query: {
-              redirect: to.name,
-              ...to.query,
-            } as LocationQueryRaw,
-          })
-        }
-      }
+
+    // 只要是登录页面，直接放行，并且取消登录
+    if (to.name === 'login') {
+      useUser().logout()
+      next()
     } else {
-      if (to.name === 'login') {
+      const userStore = useUserStore()
+
+      try {
+        // 先获取用户信息，查看登录是否失效
+        await userStore.updateUserInfo()
+        if (!isLogin()) {
+          throw new Error('not lpgin')
+        }
         next()
-        return
+      } catch (_e) {
+        next({
+          name: 'login',
+        })
       }
-      next({
-        name: 'login',
-        query: {
-          redirect: to.name,
-          ...to.query,
-        } as LocationQueryRaw,
-      })
     }
   })
 }

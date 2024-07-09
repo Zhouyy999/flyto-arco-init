@@ -12,6 +12,5 @@ export default {
   globalSettings: false,
   device: 'desktop',
   tabBar: true,
-  menuFromServer: false,
   serverMenu: [],
 }

@@ -33,7 +33,7 @@
           <Menu />
         </a-drawer>
         <a-layout class="layout-content" :style="paddingStyle">
-          <TabBar v-if="appStore.tabBar" />
+          <TabBar />
           <a-layout-content>
             <PageLayout />
           </a-layout-content>

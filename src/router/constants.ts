@@ -1,18 +1,20 @@
-export const WHITE_LIST = [
-  { name: 'notFound', children: [] },
-  { name: 'login', children: [] },
-]
-
-export const NOT_FOUND = {
-  name: 'notFound',
-}
-
-export const REDIRECT_ROUTE_NAME = 'Redirect'
-
-export const DEFAULT_ROUTE_NAME = 'Workplace'
-
+// 登录
+export const LOGIN_ROUTE_NAME = 'login'
+// 404
+export const NOT_FOUND_ROUTE_NAME = 'notFound'
+// 主页
+export const MAIN_ROUTE_NAME = 'main'
+// 默认路由
+export const DEFAULT_ROUTE_NAME = MAIN_ROUTE_NAME
 export const DEFAULT_ROUTE = {
-  title: '工作台',
+  title: '主页',
   name: DEFAULT_ROUTE_NAME,
-  fullPath: '/dashboard/workplace',
+  fullPath: '/main',
 }
+
+// 白名单，任何用户均拥有以下页面权限
+export const WHITE_LIST = [
+  { name: LOGIN_ROUTE_NAME, children: [] },
+  { name: MAIN_ROUTE_NAME, children: [] },
+  { name: NOT_FOUND_ROUTE_NAME, children: [] },
+]

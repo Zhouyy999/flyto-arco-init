@@ -2,15 +2,12 @@
   <div class="navbar">
     <div class="left-side">
       <a-space>
-        <img
-          alt="logo"
-          src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
-        />
+        <img alt="logo" src="/public/logo/flyto-icon.png" style="width: 30px" />
         <a-typography-title
           :style="{ margin: 0, fontSize: '18px' }"
           :heading="5"
         >
-          Arco Pro
+          飞驼xxxx
         </a-typography-title>
         <icon-menu-fold
           v-if="!topMenu && appStore.device === 'mobile'"
@@ -115,15 +112,9 @@
             :size="32"
             :style="{ marginRight: '8px', cursor: 'pointer' }"
           >
-            <img alt="avatar" :src="avatar" />
+            <img alt="avatar" :src="avatar || './public/logo/flyto-icon.png'" />
           </a-avatar>
           <template #content>
-            <a-doption>
-              <a-space @click="switchRoles">
-                <icon-tag />
-                <span> 切换角色 </span>
-              </a-space>
-            </a-doption>
             <a-doption>
               <a-space @click="$router.push({ name: 'Info' })">
                 <icon-user />
@@ -151,7 +142,6 @@
 
 <script lang="ts" setup>
   import { computed, ref, inject } from 'vue'
-  import { Message } from '@arco-design/web-vue'
   import { useDark, useToggle, useFullscreen } from '@vueuse/core'
   import { useAppStore, useUserStore } from '@/store'
   import useUser from '@/hooks/user'
@@ -163,7 +153,7 @@
   const { logout } = useUser()
   const { isFullscreen, toggle: toggleFullScreen } = useFullscreen()
   const avatar = computed(() => {
-    return userStore.avatar
+    return userStore.userInfo.avatar
   })
   const theme = computed(() => {
     return appStore.theme
@@ -200,10 +190,6 @@
     logout()
   }
 
-  const switchRoles = async () => {
-    const res = await userStore.switchRoles()
-    Message.success(res as string)
-  }
   const toggleDrawerMenu = inject('toggleDrawerMenu') as () => void
 </script>
 

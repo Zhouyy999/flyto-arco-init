@@ -66,14 +66,13 @@
   import { Message } from '@arco-design/web-vue'
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
   import { useStorage } from '@vueuse/core'
-  import { useUserStore } from '@/store'
   import useLoading from '@/hooks/loading'
-  import type { LoginData } from '@/api/user'
+  import useUser from '@hooks/user'
+  import type { LoginData } from '@types'
 
   const router = useRouter()
   const errorMessage = ref('')
   const { loading, setLoading } = useLoading()
-  const userStore = useUserStore()
 
   const loginConfig = useStorage('login-config', {
     rememberPassword: true,
@@ -98,10 +97,10 @@
     if (!errors) {
       setLoading(true)
       try {
-        await userStore.login(values as LoginData)
+        await useUser().login(values as LoginData)
         const { redirect, ...othersQuery } = router.currentRoute.value.query
         router.push({
-          name: (redirect as string) || 'Workplace',
+          name: (redirect as string) || 'main',
           query: {
             ...othersQuery,
           },

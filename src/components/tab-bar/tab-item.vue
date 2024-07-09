@@ -61,7 +61,7 @@
   import { useRouter, useRoute } from 'vue-router'
   import { useTabBarStore } from '@/store'
   import type { TagProps } from '@/store/modules/tab-bar/types'
-  import { DEFAULT_ROUTE_NAME, REDIRECT_ROUTE_NAME } from '@/router/constants'
+  import { DEFAULT_ROUTE_NAME } from '@/router/constants'
 
   // eslint-disable-next-line no-shadow
   enum Eaction {
@@ -152,14 +152,7 @@
       tabBarStore.freshTabList(filterList)
       router.push({ name: itemData.name })
     } else if (value === Eaction.reload) {
-      tabBarStore.deleteCache(itemData)
-      await router.push({
-        name: REDIRECT_ROUTE_NAME,
-        params: {
-          path: route.fullPath,
-        },
-      })
-      tabBarStore.addCache(itemData.name)
+      console.log('reload')
     } else {
       tabBarStore.resetTabList()
       router.push({ name: DEFAULT_ROUTE_NAME })

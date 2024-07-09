@@ -1,19 +1,8 @@
-const TOKEN_KEY = 'token'
+import { useUserStore } from '@/store'
 
-const isLogin = () => {
-  return !!localStorage.getItem(TOKEN_KEY)
+// 当前使用cookie存储用户数据，每次在页面进入时，先捞取一次用户信息，通过是否成功捞取用户信息来判断当前用户登录是否失效
+export function isLogin(): boolean {
+  return useUserStore().userInfo.sysno > 0
 }
 
-const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY)
-}
-
-const setToken = (token: string) => {
-  localStorage.setItem(TOKEN_KEY, token)
-}
-
-const clearToken = () => {
-  localStorage.removeItem(TOKEN_KEY)
-}
-
-export { isLogin, getToken, setToken, clearToken }
+export default null

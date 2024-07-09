@@ -1,27 +1,38 @@
-import type { RouteRecordNormalized } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
+import {
+  MAIN_ROUTE_NAME,
+  NOT_FOUND_ROUTE_NAME,
+  LOGIN_ROUTE_NAME,
+} from '@/router/constants'
 
-const modules = import.meta.glob('./modules/*.ts', { eager: true })
-const externalModules = import.meta.glob('./externalModules/*.ts', {
-  eager: true,
-})
-
-function formatModules(_modules: any, result: RouteRecordNormalized[]) {
-  Object.keys(_modules).forEach(key => {
-    const defaultModule = _modules[key].default
-    if (!defaultModule) {
-      return
-    }
-    const moduleList = Array.isArray(defaultModule)
-      ? [...defaultModule]
-      : [defaultModule]
-    result.push(...moduleList)
-  })
-  return result
+export const LOGIN_ROUTE: RouteRecordRaw = {
+  path: '/login',
+  name: LOGIN_ROUTE_NAME,
+  component: () => import('@/views/login/index.vue'),
+  meta: {
+    requiresAuth: false,
+  },
 }
 
-export const appRoutes: RouteRecordNormalized[] = formatModules(modules, [])
+export const MAIN_ROUTE: RouteRecordRaw = {
+  path: '/',
+  redirect: 'main',
+  component: () => import('@/layout/default-layout.vue'),
+  children: [
+    {
+      path: '/main',
+      name: MAIN_ROUTE_NAME,
+      component: () => import('@/views/main/index.vue'),
+      meta: {
+        locale: '主页',
+        requiresAuth: false,
+      },
+    },
+  ],
+}
 
-export const appExternalRoutes: RouteRecordNormalized[] = formatModules(
-  externalModules,
-  [],
-)
+export const NOT_FOUND_ROUTE: RouteRecordRaw = {
+  path: '/:pathMatch(.*)*',
+  name: NOT_FOUND_ROUTE_NAME,
+  component: () => import('@/views/not-found/index.vue'),
+}

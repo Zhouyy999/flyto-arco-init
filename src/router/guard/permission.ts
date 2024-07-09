@@ -1,59 +1,39 @@
 import type { Router, RouteRecordNormalized } from 'vue-router'
-import NProgress from 'nprogress' // progress bar
+import NProgress from 'nprogress'
 
-import usePermission from '@/hooks/permission'
-import { useUserStore, useAppStore } from '@/store'
-import { appRoutes } from '../routes'
-import { WHITE_LIST, NOT_FOUND } from '../constants'
+import { useAppStore } from '@store'
+import { WHITE_LIST, NOT_FOUND_ROUTE_NAME } from '../constants'
 
-export default function setupPermissionGuard(router: Router) {
-  router.beforeEach(async (to, from, next) => {
+export default function setupPremissionGuard(router: Router) {
+  router.beforeEach(async (to, _from, next) => {
     const appStore = useAppStore()
-    const userStore = useUserStore()
-    const Permission = usePermission()
-    const permissionsAllow = Permission.accessRouter(to)
-    if (appStore.menuFromServer) {
-      // 针对来自服务端的菜单配置进行处理
-      // Handle routing configuration from the server
 
-      // 根据需要自行完善来源于服务端的菜单配置的permission逻辑
-      // Refine the permission logic from the server's menu configuration as needed
-      if (
-        !appStore.appAsyncMenus.length &&
-        !WHITE_LIST.find(el => el.name === to.name)
-      ) {
-        await appStore.fetchServerMenuConfig()
-      }
-      const serverMenuConfig = [...appStore.appAsyncMenus, ...WHITE_LIST]
+    // 获取菜单
+    if (appStore.serverMenu.length === 0) {
+      await appStore.fetchServerMenuConfig()
+    }
 
-      let exist = false
-      while (serverMenuConfig.length && !exist) {
-        const element = serverMenuConfig.shift()
-        if (element?.name === to.name) {
-          exist = true
-        }
+    const allMenus = [...appStore.serverMenu, ...WHITE_LIST]
 
-        if (element?.children) {
-          serverMenuConfig.push(
-            ...(element.children as unknown as RouteRecordNormalized[]),
-          )
-        }
+    // 验证当前跳转的页面是否在当前用户所在的菜单中
+    let exist = false
+    while (allMenus.length > 0 && !exist) {
+      const menu = allMenus.shift()
+      if (menu?.name === to.name) {
+        exist = true
       }
-      if (exist && permissionsAllow) {
-        next()
-      } else {
-        next(NOT_FOUND)
+
+      // 如果有子菜单，加入到 allMenus 中进行校验
+      if (menu?.children) {
+        allMenus.push(...(menu.children as RouteRecordNormalized[]))
       }
+    }
+
+    // 如果不在菜单中，跳转到 404
+    if (exist) {
+      next()
     } else {
-      // eslint-disable-next-line no-lonely-if
-      if (permissionsAllow) {
-        next()
-      } else {
-        const destination =
-          Permission.findFirstPermissionRoute(appRoutes, userStore.role) ||
-          NOT_FOUND
-        next(destination)
-      }
+      next({ name: NOT_FOUND_ROUTE_NAME })
     }
     NProgress.done()
   })

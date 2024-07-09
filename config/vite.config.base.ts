@@ -26,6 +26,18 @@ export default defineConfig({
         find: 'vue',
         replacement: 'vue/dist/vue.esm-bundler.js', // compile template
       },
+      {
+        find: '@type',
+        replacement: resolve(__dirname, '../src/types'),
+      },
+      {
+        find: '@store',
+        replacement: resolve(__dirname, '../src/store'),
+      },
+      {
+        find: '@hooks',
+        replacement: resolve(__dirname, '../src/hooks'),
+      },
     ],
     extensions: ['.ts', '.js'],
   },
@@ -43,5 +55,9 @@ export default defineConfig({
         javascriptEnabled: true,
       },
     },
+  },
+  server: {
+    open: false,
+    port: 9000,
   },
 })
