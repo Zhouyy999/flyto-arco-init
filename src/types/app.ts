@@ -1,9 +1,12 @@
 import type { RouteRecordNormalized } from 'vue-router'
 
+export interface ServerMenu extends RouteRecordNormalized {
+  url?: string
+}
+
 export interface AppState {
   theme: string
   colorWeak: boolean
-  navbar: boolean
   menu: boolean
   topMenu: boolean
   hideMenu: boolean
@@ -13,6 +16,6 @@ export interface AppState {
   menuWidth: number
   globalSettings: boolean
   device: string
-  serverMenu: RouteRecordNormalized[]
+  serverMenu: ServerMenu[]
   [key: string]: unknown
 }

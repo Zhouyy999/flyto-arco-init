@@ -12,7 +12,7 @@
 <script lang="tsx" setup>
   import { useRouter } from 'vue-router'
   import { useTabBarStore } from '@/store'
-  import { getCurrentInstance, ref, h } from 'vue'
+  import { getCurrentInstance, ref } from 'vue'
   import { ModalReturn } from '@arco-design/web-vue'
 
   const router = useRouter()
@@ -23,7 +23,7 @@
   let timer: NodeJS.Timer
 
   function closePage() {
-    const allTabs = tabBarStore.getTabList
+    const allTabs = tabBarStore.tagList
     const curTabIdx = allTabs.findIndex(el => {
       return el.fullPath === router.currentRoute.value.fullPath
     })
@@ -31,7 +31,7 @@
     modalIns?.close()
     clearInterval(timer)
     router.push(allTabs[curTabIdx - 1].fullPath)
-    tabBarStore.deleteTag(curTabIdx, allTabs[curTabIdx])
+    tabBarStore.deleteTag(curTabIdx)
   }
 
   const countdown = ref(3)
@@ -39,11 +39,12 @@
     getCurrentInstance()?.appContext.config.globalProperties.$modal.error({
       title: '页面错误',
       maskClosable: false,
-      content: () =>
-        h('div', { style: 'text-align: center' }, [
-          h('div', `页面不存在或权限不足`),
-          h('div', `将在${countdown.value}秒后自动关闭页面`),
-        ]),
+      content: () => (
+        <div style="text-align: center">
+          <p>页面不存在或权限不足</p>
+          <p>将在{countdown.value}秒后自动关闭页面</p>
+        </div>
+      ),
       closable: true,
       okText: '关闭页面',
       onOk: closePage,
@@ -61,7 +62,6 @@
 
 <style scoped lang="less">
   .content {
-    // padding-top: 100px;
     position: absolute;
     top: 50%;
     left: 50%;

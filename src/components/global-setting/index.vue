@@ -1,11 +1,4 @@
 <template>
-  <div v-if="!appStore.navbar" class="fixed-settings" @click="setVisible">
-    <a-button type="primary">
-      <template #icon>
-        <icon-settings />
-      </template>
-    </a-button>
-  </div>
   <a-drawer
     :width="300"
     unmount-on-close
@@ -16,7 +9,7 @@
     @cancel="cancel"
   >
     <template #title> {{ '页面配置' }} </template>
-    <Block :options="contentOpts" title="内容区域'" />
+    <Block :options="contentOpts" title="内容区域" />
     <Block :options="othersOpts" title="其他设置" />
     <a-alert>{{
       '配置之后仅是临时生效，要想真正作用于项目，点击下方的 "复制配置" 按钮，将配置替换到 settings.json 中即可。'
@@ -37,7 +30,6 @@
   const { copy } = useClipboard()
   const visible = computed(() => appStore.globalSettings)
   const contentOpts = computed(() => [
-    { name: '导航栏', key: 'navbar', defaultVal: appStore.navbar },
     {
       name: '菜单栏',
       key: 'menu',
@@ -72,9 +64,6 @@
     const text = JSON.stringify(appStore.$state, null, 2)
     await copy(text)
     Message.success('复制成功，请粘贴到 src/settings.json 文件中')
-  }
-  const setVisible = () => {
-    appStore.updateSettings({ globalSettings: true })
   }
 </script>
 

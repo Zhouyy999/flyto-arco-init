@@ -5,5 +5,5 @@ import './message-box'
 import './main'
 
 Mock.setup({
-  timeout: '600-1000',
+  timeout: '60-100',
 })

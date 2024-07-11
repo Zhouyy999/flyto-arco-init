@@ -5,8 +5,3 @@ export interface TagProps {
   query?: any
   ignoreCache?: boolean
 }
-
-export interface TabBarState {
-  tagList: TagProps[]
-  cacheTabList: Set<string>
-}

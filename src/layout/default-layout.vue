@@ -1,6 +1,6 @@
 <template>
   <a-layout class="layout" :class="{ mobile: appStore.hideMenu }">
-    <div v-if="navbar" class="layout-navbar">
+    <div class="layout-navbar">
       <NavBar />
     </div>
     <a-layout>
@@ -13,7 +13,6 @@
           :collapsed="collapsed"
           :collapsible="true"
           :width="menuWidth"
-          :style="{ paddingTop: navbar ? '60px' : '' }"
           :hide-trigger="true"
           @collapse="setCollapsed"
         >
@@ -57,8 +56,6 @@
   const isInit = ref(false)
   const appStore = useAppStore()
   useResponsive(true)
-  const navbarHeight = `60px`
-  const navbar = computed(() => appStore.navbar)
   const renderMenu = computed(() => appStore.menu && !appStore.topMenu)
   const hideMenu = computed(() => appStore.hideMenu)
   const footer = computed(() => appStore.footer)
@@ -69,12 +66,9 @@
     return appStore.menuCollapse
   })
   const paddingStyle = computed(() => {
-    const paddingLeft =
-      renderMenu.value && !hideMenu.value
-        ? { paddingLeft: `${menuWidth.value}px` }
-        : {}
-    const paddingTop = navbar.value ? { paddingTop: navbarHeight } : {}
-    return { ...paddingLeft, ...paddingTop }
+    return renderMenu.value && !hideMenu.value
+      ? { paddingLeft: `${menuWidth.value}px` }
+      : {}
   })
   const setCollapsed = (val: boolean) => {
     if (!isInit.value) {
@@ -115,6 +109,7 @@
 
   .layout-sider {
     position: fixed;
+    padding-top: 60px;
     top: 0;
     left: 0;
     z-index: 99;
@@ -160,6 +155,7 @@
   }
 
   .layout-content {
+    padding-top: 60px;
     min-height: 100vh;
     overflow-y: hidden;
     background-color: var(--color-fill-2);

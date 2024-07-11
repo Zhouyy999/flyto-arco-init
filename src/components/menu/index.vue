@@ -31,7 +31,7 @@
       const selectedKey = ref<string[]>([])
 
       const goto = (item: RouteRecordRaw) => {
-        // Open external link
+        // 是否打开新窗口
         if (regexUrl.test(item.path)) {
           openWindow(item.path)
           selectedKey.value = [item.name as string]

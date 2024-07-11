@@ -1,7 +1,6 @@
 export default {
   theme: 'light',
   colorWeak: false,
-  navbar: true,
   menu: true,
   topMenu: false,
   hideMenu: false,

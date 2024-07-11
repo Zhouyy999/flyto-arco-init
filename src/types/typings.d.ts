@@ -1,3 +1,4 @@
+// 重定义RouteMete类型
 import 'vue-router'
 
 declare module 'vue-router' {

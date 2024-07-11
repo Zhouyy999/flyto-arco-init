@@ -1,8 +1,8 @@
+import { ref } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import { defineStore } from 'pinia'
-import { DEFAULT_ROUTE, DEFAULT_ROUTE_NAME } from '@/router/constants'
-import { isString } from '@/utils/is'
-import { TabBarState, TagProps } from './types'
+import { DEFAULT_ROUTE, REDIRECT_ROUTE_NAME } from '@/router/constants'
+import { TagProps } from '@/types'
 
 const formatTag = (route: RouteLocationNormalized): TagProps => {
   const { name, meta, fullPath, query } = route
@@ -15,55 +15,35 @@ const formatTag = (route: RouteLocationNormalized): TagProps => {
   }
 }
 
-const useAppStore = defineStore('tabBar', {
-  state: (): TabBarState => ({
-    cacheTabList: new Set([DEFAULT_ROUTE_NAME]),
-    tagList: [DEFAULT_ROUTE],
-  }),
+// 不会添加到tabTag中的路由
+const BAN_LIST = [REDIRECT_ROUTE_NAME]
 
-  getters: {
-    getTabList(): TagProps[] {
-      return this.tagList
-    },
-    getCacheList(): string[] {
-      return Array.from(this.cacheTabList)
-    },
-  },
+export default defineStore('tabBar', () => {
+  const tagList = ref<TagProps[]>([DEFAULT_ROUTE])
 
-  actions: {
-    updateTabList(route: RouteLocationNormalized) {
-      this.tagList.push(formatTag(route))
-      if (!route.meta.ignoreCache) {
-        this.cacheTabList.add(route.name as string)
-      }
-    },
-    deleteTag(idx: number, tag: TagProps) {
-      this.tagList.splice(idx, 1)
-      this.cacheTabList.delete(tag.name)
-    },
-    addCache(name: string) {
-      if (isString(name) && name !== '') {
-        this.cacheTabList.add(name)
-      }
-    },
-    deleteCache(tag: TagProps) {
-      this.cacheTabList.delete(tag.name)
-    },
-    freshTabList(tags: TagProps[]) {
-      this.tagList = tags
-      this.cacheTabList.clear()
-      // 要先判断ignoreCache
-      this.tagList
-        .filter(el => !el.ignoreCache)
-        .map(el => el.name)
-        .forEach(x => this.cacheTabList.add(x))
-    },
-    resetTabList() {
-      this.tagList = [DEFAULT_ROUTE]
-      this.cacheTabList.clear()
-      this.cacheTabList.add(DEFAULT_ROUTE_NAME)
-    },
-  },
+  function addTabTag(route: RouteLocationNormalized) {
+    if (BAN_LIST.includes(route.name as string)) {
+      return
+    }
+
+    tagList.value.push(formatTag(route))
+  }
+  function deleteTag(idx: number) {
+    tagList.value.splice(idx, 1)
+  }
+
+  function freshTabList(tags: TagProps[]) {
+    tagList.value = tags
+  }
+  function resetTabList() {
+    tagList.value = [DEFAULT_ROUTE]
+  }
+
+  return {
+    tagList,
+    addTabTag,
+    deleteTag,
+    freshTabList,
+    resetTabList,
+  }
 })
-
-export default useAppStore

@@ -1,10 +1,10 @@
 <template>
   <div class="tab-bar-container">
-    <a-affix ref="affixRef" :offset-top="offsetTop">
+    <a-affix ref="affixRef" :offset-top="60">
       <div class="tab-bar-box">
         <div class="tab-bar-scroll">
           <div class="tags-wrap">
-            <tab-item
+            <TabItem
               v-for="(tag, index) in tagList"
               :key="tag.fullPath"
               :index="index"
@@ -12,47 +12,51 @@
             />
           </div>
         </div>
-        <div class="tag-bar-operation"></div>
+        <div class="tag-bar-operation">
+          <IconRefresh @click="refreshCurPage"></IconRefresh>
+          <TabOperation></TabOperation>
+        </div>
       </div>
     </a-affix>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed, watch, onUnmounted } from 'vue'
-  import type { RouteLocationNormalized } from 'vue-router'
+  import { ref, onUnmounted } from 'vue'
+  import { useRouter, useRoute, type RouteLocationNormalized } from 'vue-router'
   import {
     listenerRouteChange,
     removeRouteListener,
   } from '@/utils/route-listener'
-  import { useAppStore, useTabBarStore } from '@/store'
-  import tabItem from './tab-item.vue'
+  import { useTabBarStore } from '@/store'
+  import { REDIRECT_ROUTE_NAME } from '@/router/constants'
+  import TabItem from './tab-item.vue'
+  import TabOperation from './tab-operation.vue'
 
-  const appStore = useAppStore()
   const tabBarStore = useTabBarStore()
+  const route = useRoute()
+  const router = useRouter()
 
   const affixRef = ref()
-  const tagList = computed(() => {
-    return tabBarStore.getTabList
-  })
-  const offsetTop = computed(() => {
-    return appStore.navbar ? 60 : 0
-  })
+  const { tagList } = tabBarStore
 
-  watch(
-    () => appStore.navbar,
-    () => {
-      affixRef.value.updatePosition()
-    },
-  )
   listenerRouteChange((route: RouteLocationNormalized) => {
     if (
       !route.meta.noAffix &&
-      !tagList.value.some(tag => tag.fullPath === route.fullPath)
+      !tabBarStore.tagList.some(tag => tag.fullPath === route.fullPath)
     ) {
-      tabBarStore.updateTabList(route)
+      tabBarStore.addTabTag(route)
     }
   }, true)
+
+  async function refreshCurPage() {
+    router.push({
+      name: REDIRECT_ROUTE_NAME,
+      params: {
+        path: route.fullPath,
+      },
+    })
+  }
 
   onUnmounted(() => {
     removeRouteListener()
@@ -94,8 +98,10 @@
     }
 
     .tag-bar-operation {
-      width: 100px;
+      width: 60px;
       height: 32px;
+      display: flex;
+      align-items: center;
     }
   }
 </style>

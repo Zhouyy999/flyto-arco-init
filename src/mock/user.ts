@@ -85,14 +85,22 @@ setupMock({
                 locale: '权限页面1',
               },
             },
-            // {
-            //   path: '/auth1/detail',
-            //   name: 'authDetail',
-            //   meta: {
-            //     hideInMenu: true,
-            //     locale: '权限页面明细',
-            //   },
-            // },
+            {
+              path: '/auth1/mgt',
+              url: '/auth1/mgt?type=1',
+              name: 'auth2',
+              meta: {
+                locale: '权限页面2',
+              },
+            },
+            {
+              path: '/auth1/detail',
+              name: 'authDetail',
+              meta: {
+                hideInMenu: true,
+                locale: '权限页面明细',
+              },
+            },
           ],
         },
       ]

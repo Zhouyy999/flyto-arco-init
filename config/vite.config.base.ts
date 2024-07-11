@@ -38,6 +38,10 @@ export default defineConfig({
         find: '@hooks',
         replacement: resolve(__dirname, '../src/hooks'),
       },
+      {
+        find: '@enum',
+        replacement: resolve(__dirname, '../src/enum'),
+      },
     ],
     extensions: ['.ts', '.js'],
   },

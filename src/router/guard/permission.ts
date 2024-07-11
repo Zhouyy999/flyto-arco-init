@@ -1,9 +1,14 @@
-import type { Router, RouteRecordNormalized, RouteRecordRaw } from 'vue-router'
+import type { Router, RouteRecordRaw } from 'vue-router'
 import NProgress from 'nprogress'
 
 import { useAppStore } from '@store'
+import { ServerMenu } from '@types'
 import { ROOT_ROUTE_NAME, LOGIN_ROUTE_NAME } from '../constants'
 import { NOT_FOUND_ROUTE } from '../routes'
+
+// 获取所有的页面
+const modules = import.meta.glob('../../views/**/*.vue')
+const NotFound = () => import('@/views/not-found/index.vue')
 
 export default function setupPremissionGuard(router: Router) {
   router.beforeEach(async (to, _from, next) => {
@@ -23,13 +28,26 @@ export default function setupPremissionGuard(router: Router) {
       let isPageAuth = false
       while (allMenus.length > 0) {
         const menu = allMenus.shift()
-        const route: RouteRecordRaw = {
-          path: menu?.path || '',
-          name: menu?.name,
-          meta: menu?.meta || {},
-          children: menu?.children || [],
-          component: () => import(`/src/views${menu?.path}.vue`),
-        }
+
+        // 菜单没有对应的页面，定向到 404
+        const route: RouteRecordRaw = modules[`../../views${menu?.path}.vue`]
+          ? {
+              path: menu?.url || menu?.path || '',
+              name: menu?.name,
+              meta: menu?.meta || {},
+              children: menu?.children || [],
+              component: modules[`../../views${menu?.path}.vue`],
+            }
+          : {
+              path: menu?.path || '',
+              name: menu?.name,
+              meta: {
+                ...menu?.meta,
+                ignoreCache: true,
+              },
+              children: menu?.children || [],
+              component: NotFound,
+            }
 
         // 具有path属性，且children为空或者null，则添加路由
         // 服务端返回的路由，均嵌套在 "/" 根路由的children下
@@ -43,7 +61,7 @@ export default function setupPremissionGuard(router: Router) {
 
         // 如果有子菜单，加入到 allMenus 中进行校验
         if (route.children.length > 0) {
-          allMenus.push(...(route.children as RouteRecordNormalized[]))
+          allMenus.push(...(route.children as ServerMenu[]))
         }
 
         if (!isPageAuth && to.name === route.name) {

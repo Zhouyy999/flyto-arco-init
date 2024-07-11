@@ -16,7 +16,9 @@
       "@store": ["src/store"],
       "@store/*": ["src/store/*"],
       "@hooks": ["src/hooks"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@enum": ["src/enum"],
+      "@enum/*": ["src/enum/*"]
     },
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
