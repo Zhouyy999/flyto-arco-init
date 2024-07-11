@@ -69,7 +69,7 @@ setupMock({
           FucntionKey: 'AuthTestMgt',
           FunctionName: '权限测试2',
           IsMenu: 1,
-          MenuUrl: '/auth1/mgt/2',
+          MenuUrl: '/auth1/mgt1/2',
           MenuIcon: '',
           CommonStatus: 1,
         },

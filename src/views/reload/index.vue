@@ -3,14 +3,16 @@
 </template>
 
 <script lang="ts" setup>
+  import { onActivated } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
 
   const router = useRouter()
   const route = useRoute()
 
-  const gotoPath = route.params.path as string
-
-  router.replace(gotoPath)
+  onActivated(() => {
+    const gotoPath = route.params.path as string
+    router.replace(gotoPath)
+  })
 </script>
 
 <style scoped lang="less"></style>

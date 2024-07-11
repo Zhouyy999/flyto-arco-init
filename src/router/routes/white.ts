@@ -35,12 +35,14 @@ export const MAIN_ROUTE: RouteRecordRaw = {
   component: () => import('@/views/main/index.vue'),
 }
 
-// 重定向
+// 刷新重定向
 export const RELOAD_ROUTE: RouteRecordRaw = {
   path: '/reload/:path',
   name: RELOAD_ROUTE_NAME,
   meta: {
-    ignoreCache: true,
+    // 如果重定向进行不进行缓存，在只有首页一个页面时，然后打开两个及以上的页面，此时进行刷新会报错。没找到原因
+    // 目前解决办法：不进行缓存，在页面中通过onActived钩子， 每当激活一次则进行一次重定向
+    // ignoreCache: true,
     noTabBar: true,
   },
   component: () => import('@/views/reload/index.vue'),
