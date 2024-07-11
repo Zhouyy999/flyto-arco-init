@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="layout" :class="{ mobile: appStore.hideMenu }">
+  <a-layout class="layout" :class="{ mobile: appStore.appData.hideMenu }">
     <div class="layout-navbar">
       <NavBar />
     </div>
@@ -56,14 +56,16 @@
   const isInit = ref(false)
   const appStore = useAppStore()
   useResponsive(true)
-  const renderMenu = computed(() => appStore.menu && !appStore.topMenu)
-  const hideMenu = computed(() => appStore.hideMenu)
-  const footer = computed(() => appStore.footer)
+  const renderMenu = computed(
+    () => appStore.appData.menu && !appStore.appData.topMenu,
+  )
+  const hideMenu = computed(() => appStore.appData.hideMenu)
+  const footer = computed(() => appStore.appData.footer)
   const menuWidth = computed(() => {
-    return appStore.menuCollapse ? 48 : appStore.menuWidth
+    return appStore.appData.menuCollapse ? 48 : appStore.appData.menuWidth
   })
   const collapsed = computed(() => {
-    return appStore.menuCollapse
+    return appStore.appData.menuCollapse
   })
   const paddingStyle = computed(() => {
     return renderMenu.value && !hideMenu.value

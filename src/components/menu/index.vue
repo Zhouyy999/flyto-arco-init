@@ -1,23 +1,22 @@
 <script lang="tsx">
   import { defineComponent, ref, h, compile, computed } from 'vue'
-  import { useRoute, useRouter, RouteRecordRaw } from 'vue-router'
-  import type { RouteMeta } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import { useAppStore } from '@/store'
   import { listenerRouteChange } from '@/utils/route-listener'
   import { openWindow, regexUrl } from '@/utils'
-  import useMenuTree from './use-menu-tree'
+  import { AppMenu } from '@/types'
 
   export default defineComponent({
     emit: ['collapse'],
     setup() {
       const appStore = useAppStore()
       const router = useRouter()
-      const route = useRoute()
-      const { menuTree } = useMenuTree()
+      const menuTree = appStore.appData.menuList
+
       const collapsed = computed({
         get() {
-          if (appStore.device === 'desktop') {
-            return appStore.menuCollapse
+          if (appStore.appData.device === 'desktop') {
+            return appStore.appData.menuCollapse
           }
           return false
         },
@@ -25,100 +24,72 @@
           appStore.updateSettings({ menuCollapse: value })
         },
       })
-
-      const topMenu = computed(() => appStore.topMenu)
+      const topMenu = computed(() => appStore.appData.topMenu)
       const openKeys = ref<string[]>([])
       const selectedKey = ref<string[]>([])
 
-      const goto = (item: RouteRecordRaw) => {
+      const goto = (item: AppMenu) => {
         // 是否打开新窗口
         if (regexUrl.test(item.path)) {
           openWindow(item.path)
-          selectedKey.value = [item.name as string]
+          selectedKey.value = [item.path as string]
           return
         }
-        // Eliminate external link side effects
-        const { hideInMenu, activeMenu } = item.meta as RouteMeta
-        if (route.name === item.name && !hideInMenu && !activeMenu) {
-          selectedKey.value = [item.name as string]
-          return
-        }
+
         // Trigger router change
-        router.push({
-          name: item.name,
-        })
+        router.push(item.path)
       }
-      const findMenuOpenKeys = (target: string) => {
-        const result: string[] = []
-        let isFind = false
-        const backtrack = (item: RouteRecordRaw, keys: string[]) => {
-          if (item.name === target) {
-            isFind = true
-            result.push(...keys)
-            return
-          }
-          if (item.children?.length) {
-            item.children.forEach(el => {
-              backtrack(el, [...keys, el.name as string])
-            })
-          }
-        }
-        menuTree.value.forEach((el: RouteRecordRaw) => {
-          if (isFind) {
-            // Performance optimization
-            return
-          }
-          backtrack(el, [el.name as string])
-        })
-        return result
-      }
+
       listenerRouteChange(newRoute => {
-        const { activeMenu, hideInMenu } = newRoute.meta
-        if (!hideInMenu || activeMenu) {
-          const menuOpenKeys = findMenuOpenKeys(
-            (activeMenu || newRoute.name) as string,
-          )
+        const serverAuth = appStore.appData.serverAuthList.find(
+          o => o.FucntionKey === newRoute.name,
+        )
 
-          const keySet = new Set([...menuOpenKeys, ...openKeys.value])
-          openKeys.value = [...keySet]
+        if (serverAuth) {
+          const treeCodes: string[] = []
+          for (let i = 2; i <= serverAuth.TreeCode.length; i += 2) {
+            treeCodes.push(serverAuth.TreeCode.slice(0, i))
+          }
 
-          selectedKey.value = [
-            activeMenu || menuOpenKeys[menuOpenKeys.length - 1],
-          ]
+          openKeys.value = treeCodes
         }
+
+        selectedKey.value = [newRoute.fullPath as string]
       }, true)
       const setCollapse = (val: boolean) => {
-        if (appStore.device === 'desktop') {
+        if (appStore.appData.device === 'desktop') {
           appStore.updateSettings({ menuCollapse: val })
         }
       }
 
       const renderSubMenu = () => {
-        function travel(_route: RouteRecordRaw[], nodes = []) {
+        function travel(_route: AppMenu[], nodes = []) {
           if (_route) {
             _route.forEach(element => {
-              // This is demo, modify nodes as needed
-              const icon = element?.meta?.icon
-                ? () => h(compile(`<${element?.meta?.icon}/>`))
+              const icon = element.icon
+                ? () => h(compile(`<${element.icon}/>`))
                 : null
+
+              // 有下一级，key为treeCode
+              // 没有下一级，key为path
               const node =
-                element?.children && element?.children.length !== 0 ? (
+                element.path === '' ? (
                   <a-sub-menu
-                    key={element?.name}
+                    key={element.treeCode}
                     v-slots={{
                       icon,
-                      title: () => h(compile(element?.meta?.locale || '')),
+                      title: () => h(compile(element.title || '')),
                     }}
                   >
-                    {travel(element?.children)}
+                    {travel(element?.children || [])}
                   </a-sub-menu>
                 ) : (
                   <a-menu-item
-                    key={element?.name}
+                    key={element.path}
                     v-slots={{ icon }}
                     onClick={() => goto(element)}
                   >
-                    {element?.meta?.locale}
+                    {element?.title}
                   </a-menu-item>
                 )
               nodes.push(node as never)
@@ -126,7 +97,7 @@
           }
           return nodes
         }
-        return travel(menuTree.value)
+        return travel(menuTree)
       }
 
       return () => (
@@ -134,7 +105,7 @@
           mode={topMenu.value ? 'horizontal' : 'vertical'}
           v-model:collapsed={collapsed.value}
           v-model:open-keys={openKeys.value}
-          show-collapse-button={appStore.device !== 'mobile'}
+          show-collapse-button={appStore.appData.device !== 'mobile'}
           auto-open={false}
           selected-keys={selectedKey.value}
           auto-open-selected={true}

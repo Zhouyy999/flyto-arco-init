@@ -11,5 +11,6 @@ export default {
   globalSettings: false,
   device: 'desktop',
   tabBar: true,
-  serverMenu: [],
+  menuList: [],
+  serverAuthList: [],
 }

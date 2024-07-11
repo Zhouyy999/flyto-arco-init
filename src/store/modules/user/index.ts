@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { getUserInfo } from '@/api/user'
 import type { UserInfo } from '@types'
@@ -25,13 +25,15 @@ const initUserInfo: UserInfo = {
 
 // 用户信息
 export default defineStore('user', () => {
-  const userInfo = ref<UserInfo>({ ...initUserInfo })
+  const userInfo = reactive<UserInfo>({ ...initUserInfo })
+
+  const isLogin = computed<boolean>(() => userInfo.sysno > 0)
 
   function setUserInfo(partial: Partial<UserInfo>) {
-    userInfo.value = { ...userInfo.value, ...partial }
+    Object.assign(userInfo, partial)
   }
   function resetUserInfo() {
-    userInfo.value = { ...initUserInfo }
+    Object.assign(userInfo, initUserInfo)
   }
   async function updateUserInfo() {
     const data = (await getUserInfo()).data as UserInfo
@@ -40,6 +42,7 @@ export default defineStore('user', () => {
 
   return {
     userInfo,
+    isLogin,
     setUserInfo,
     resetUserInfo,
     updateUserInfo,

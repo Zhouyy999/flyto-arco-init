@@ -5,7 +5,7 @@
         <div class="tab-bar-scroll">
           <div class="tags-wrap">
             <TabItem
-              v-for="(tag, index) in tagList"
+              v-for="(tag, index) in tabBarStore.tagList"
               :key="tag.fullPath"
               :index="index"
               :item-data="tag"
@@ -29,7 +29,7 @@
     removeRouteListener,
   } from '@/utils/route-listener'
   import { useTabBarStore } from '@/store'
-  import { REDIRECT_ROUTE_NAME } from '@/router/constants'
+  import { RELOAD_ROUTE_NAME } from '@/router/constants'
   import TabItem from './tab-item.vue'
   import TabOperation from './tab-operation.vue'
 
@@ -38,11 +38,10 @@
   const router = useRouter()
 
   const affixRef = ref()
-  const { tagList } = tabBarStore
 
   listenerRouteChange((route: RouteLocationNormalized) => {
     if (
-      !route.meta.noAffix &&
+      !route.meta.noTabBar &&
       !tabBarStore.tagList.some(tag => tag.fullPath === route.fullPath)
     ) {
       tabBarStore.addTabTag(route)
@@ -50,8 +49,8 @@
   }, true)
 
   async function refreshCurPage() {
-    router.push({
-      name: REDIRECT_ROUTE_NAME,
+    await router.push({
+      name: RELOAD_ROUTE_NAME,
       params: {
         path: route.fullPath,
       },

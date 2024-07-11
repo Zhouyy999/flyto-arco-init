@@ -64,44 +64,64 @@ setupMock({
     Mock.mock(new RegExp('/api/user/menu'), () => {
       const menuList = [
         {
-          path: '/main',
-          name: 'main',
-          meta: {
-            icon: 'icon-home',
-            locale: '主页',
-          },
+          SysNo: 6,
+          TreeCode: '0104',
+          FucntionKey: 'AuthTestMgt',
+          FunctionName: '权限测试2',
+          IsMenu: 1,
+          MenuUrl: '/auth1/mgt/2',
+          MenuIcon: '',
+          CommonStatus: 1,
         },
         {
-          name: 'auth',
-          meta: {
-            icon: 'icon-home',
-            locale: '测试权限页面',
-          },
-          children: [
-            {
-              path: '/auth1/mgt',
-              name: 'auth1',
-              meta: {
-                locale: '权限页面1',
-              },
-            },
-            {
-              path: '/auth1/mgt',
-              url: '/auth1/mgt?type=1',
-              name: 'auth2',
-              meta: {
-                locale: '权限页面2',
-              },
-            },
-            {
-              path: '/auth1/detail',
-              name: 'authDetail',
-              meta: {
-                hideInMenu: true,
-                locale: '权限页面明细',
-              },
-            },
-          ],
+          SysNo: 5,
+          TreeCode: '02',
+          FucntionKey: 'Auth2',
+          FunctionName: '权限管理1',
+          IsMenu: 1,
+          MenuUrl: '',
+          MenuIcon: 'icon-translate',
+          CommonStatus: 1,
+        },
+        {
+          SysNo: 4,
+          TreeCode: '0103',
+          FucntionKey: 'AuthTestMgt',
+          FunctionName: '权限测试1',
+          IsMenu: 1,
+          MenuUrl: '/auth1/mgt/1',
+          MenuIcon: '',
+          CommonStatus: 1,
+        },
+        {
+          SysNo: 1,
+          TreeCode: '01',
+          FucntionKey: 'AuthTest',
+          FunctionName: '权限测试',
+          IsMenu: 1,
+          MenuUrl: '',
+          MenuIcon: 'icon-attachment',
+          CommonStatus: 1,
+        },
+        {
+          SysNo: 2,
+          TreeCode: '0101',
+          FucntionKey: 'AuthTestMgt',
+          FunctionName: '管理页',
+          IsMenu: 1,
+          MenuUrl: '/auth1/mgt',
+          MenuIcon: '',
+          CommonStatus: 1,
+        },
+        {
+          SysNo: 3,
+          TreeCode: '010101',
+          FucntionKey: 'AuthTestDetail',
+          FunctionName: '明细页面',
+          IsMenu: 0,
+          MenuUrl: '/auth1/detail',
+          MenuIcon: '',
+          CommonStatus: 1,
         },
       ]
       return successResponseWrap(menuList)

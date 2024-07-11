@@ -7,7 +7,7 @@ export const MAIN_ROUTE_NAME = 'main'
 // 根页面
 export const ROOT_ROUTE_NAME = '/'
 // 重定向（刷新）页面
-export const REDIRECT_ROUTE_NAME = 'redirect'
+export const RELOAD_ROUTE_NAME = 'redirect'
 
 // 默认路由
 export const DEFAULT_ROUTE_NAME = MAIN_ROUTE_NAME
@@ -22,5 +22,5 @@ export const WHITE_ROUTE_NAMES = [
   LOGIN_ROUTE_NAME,
   MAIN_ROUTE_NAME,
   NOT_FOUND_ROUTE_NAME,
-  REDIRECT_ROUTE_NAME,
+  RELOAD_ROUTE_NAME,
 ]

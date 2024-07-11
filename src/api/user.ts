@@ -1,6 +1,5 @@
 import axios from 'axios'
-import type { RouteRecordNormalized } from 'vue-router'
-import { UserInfo, LoginData } from '@types'
+import { UserInfo, LoginData, ServerAuth } from '@types'
 
 export function login(data: LoginData) {
   return axios.post<UserInfo>('/api/user/login', data)
@@ -15,5 +14,5 @@ export function getUserInfo() {
 }
 
 export function getMenuList() {
-  return axios.post<RouteRecordNormalized[]>('/api/user/menu')
+  return axios.post<ServerAuth[]>('/api/user/menu')
 }

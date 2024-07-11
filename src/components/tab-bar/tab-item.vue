@@ -40,7 +40,7 @@
   const tabBarStore = useTabBarStore()
 
   const goto = (tag: TagProps) => {
-    router.push({ ...tag })
+    router.push(tag.fullPath)
   }
   const tagList = computed(() => {
     return tabBarStore.tagList
@@ -50,7 +50,7 @@
     tabBarStore.deleteTag(idx)
     if (props.itemData.fullPath === route.fullPath) {
       const latest = tagList.value[idx - 1] // 获取队列的前一个tab
-      router.push({ name: latest.name })
+      router.push(latest.fullPath)
     }
   }
 </script>

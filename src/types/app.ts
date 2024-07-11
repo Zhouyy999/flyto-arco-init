@@ -1,7 +1,23 @@
-import type { RouteRecordNormalized } from 'vue-router'
+export interface ServerAuth {
+  SysNo: number
+  TreeCode: string
+  FucntionKey: string
+  FunctionName: string
+  IsMenu: number
+  MenuUrl: string
+  MenuIcon: string
+  CommonStatus: number
+  [key: string]: unknown
+}
 
-export interface ServerMenu extends RouteRecordNormalized {
-  url?: string
+export interface AppMenu {
+  sysno: number
+  treeCode: string
+  key: string
+  title: string
+  icon: string
+  path: string
+  children?: AppMenu[]
 }
 
 export interface AppState {
@@ -16,6 +32,7 @@ export interface AppState {
   menuWidth: number
   globalSettings: boolean
   device: string
-  serverMenu: ServerMenu[]
+  menuList: AppMenu[]
+  serverAuthList: ServerAuth[]
   [key: string]: unknown
 }

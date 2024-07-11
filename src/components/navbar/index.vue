@@ -14,7 +14,7 @@
           飞驼xxxx
         </a-typography-title>
         <icon-menu-fold
-          v-if="!topMenu && appStore.device === 'mobile'"
+          v-if="!topMenu && appStore.appData.device === 'mobile'"
           style="font-size: 22px; cursor: pointer"
           @click="toggleDrawerMenu"
         />
@@ -163,9 +163,11 @@
     return userStore.userInfo.avatar
   })
   const theme = computed(() => {
-    return appStore.theme
+    return appStore.appData.theme
   })
-  const topMenu = computed(() => appStore.topMenu && appStore.menu)
+  const topMenu = computed(
+    () => appStore.appData.topMenu && appStore.appData.menu,
+  )
   const isDark = useDark({
     selector: 'body',
     attribute: 'arco-theme',

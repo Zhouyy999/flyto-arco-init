@@ -28,23 +28,23 @@
 
   const appStore = useAppStore()
   const { copy } = useClipboard()
-  const visible = computed(() => appStore.globalSettings)
+  const visible = computed(() => appStore.appData.globalSettings)
   const contentOpts = computed(() => [
     {
       name: '菜单栏',
       key: 'menu',
-      defaultVal: appStore.menu,
+      defaultVal: appStore.appData.menu,
     },
     {
       name: '顶部菜单栏',
       key: 'topMenu',
-      defaultVal: appStore.topMenu,
+      defaultVal: appStore.appData.topMenu,
     },
-    { name: '底部', key: 'footer', defaultVal: appStore.footer },
+    { name: '底部', key: 'footer', defaultVal: appStore.appData.ooter },
     {
       name: '菜单宽度 (px)',
       key: 'menuWidth',
-      defaultVal: appStore.menuWidth,
+      defaultVal: appStore.appData.menuWidth,
       type: 'number',
     },
   ])
@@ -52,7 +52,7 @@
     {
       name: '色弱模式',
       key: 'colorWeak',
-      defaultVal: appStore.colorWeak,
+      defaultVal: appStore.appData.colorWeak,
     },
   ])
 
@@ -61,7 +61,7 @@
     emit('cancel')
   }
   const copySettings = async () => {
-    const text = JSON.stringify(appStore.$state, null, 2)
+    const text = JSON.stringify(appStore.appData, null, 2)
     await copy(text)
     Message.success('复制成功，请粘贴到 src/settings.json 文件中')
   }

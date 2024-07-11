@@ -2,7 +2,6 @@ import type { Router } from 'vue-router'
 import NProgress from 'nprogress' // progress bar
 
 import { useUserStore } from '@/store'
-import { isLogin } from '@/utils/auth'
 import useUser from '@/hooks/user'
 
 export default function setupUserLoginInfoGuard(router: Router) {
@@ -17,12 +16,13 @@ export default function setupUserLoginInfoGuard(router: Router) {
       const userStore = useUserStore()
 
       try {
+        // 当前使用cookie存储用户数据，每次在页面进入时，先捞取一次用户信息，通过是否成功捞取用户信息来判断当前用户登录是否失效
         // 在未登录的情况下，直接从服务端获取一次用户信息（通过cookie存储的用户数据），查看登录是否失效
-        if (!isLogin()) {
+        if (!userStore.isLogin) {
           await userStore.updateUserInfo()
         }
         // 依然未登录，抛出异常，跳转登录
-        if (!isLogin()) {
+        if (!userStore.isLogin) {
           throw new Error('not lpgin')
         }
         next()

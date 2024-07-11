@@ -13,7 +13,7 @@ interface optionsFn {
 export default function useChartOption(sourceOption: optionsFn) {
   const appStore = useAppStore()
   const isDark = computed(() => {
-    return appStore.theme === 'dark'
+    return appStore.appData.theme === 'dark'
   })
   // echarts support https://echarts.apache.org/zh/theme-builder.html
   // It's not used here
