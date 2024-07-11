@@ -40,7 +40,11 @@
       key: 'topMenu',
       defaultVal: appStore.appData.topMenu,
     },
-    { name: '底部', key: 'footer', defaultVal: appStore.appData.ooter },
+    {
+      name: '底部',
+      key: 'footer',
+      defaultVal: appStore.appData.footer,
+    },
     {
       name: '菜单宽度 (px)',
       key: 'menuWidth',
