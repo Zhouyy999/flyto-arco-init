@@ -60,8 +60,4 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    open: false,
-    port: 9000,
-  },
 })

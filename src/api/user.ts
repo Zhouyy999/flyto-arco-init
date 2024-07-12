@@ -1,5 +1,17 @@
 import axios from 'axios'
+import request from '@/utils/request'
 import { UserInfo, LoginData, ServerAuth } from '@types'
+
+export function testApi() {
+  return request({
+    url: '/api/RobotTest/TestMessage',
+    data: {
+      Qty: 1,
+      ProductName: 'dsASSfdfd',
+      ProductSysNo: 123,
+    },
+  })
+}
 
 export function login(data: LoginData) {
   return axios.post<UserInfo>('/api/user/login', data)

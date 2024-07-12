@@ -1,0 +1,38 @@
+// 重写一些样式
+.arco-modal-simple {
+  padding: 12px 32px 12px;
+}
+
+// 通用请求方法的错误提示层样式
+.req-error-modal {
+  .arco-modal-header {
+    .arco-modal-title,
+    .arco-modal-title-icon {
+      font-size: 20px;
+      color: #e53e3e;
+      font-weight: bold;
+    }
+  }
+
+  .arco-modal-body {
+    font-size: 15px;
+
+    .err-tips-desc {
+      color: var(--color-text-3);
+      font-size: 14px;
+    }
+  }
+}
+
+// 铺满指定容器的loading层样式
+.full-loading-modal {
+  background: transparent;
+
+  .arco-modal-body {
+    text-align: center;
+  }
+
+  .arco-modal-footer {
+    display: none;
+  }
+}
