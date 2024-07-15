@@ -1,5 +1,6 @@
 import { h } from 'vue'
-import { Modal, ModalReturn, ModalConfig, Spin } from '@arco-design/web-vue'
+import { ModalReturn, ModalConfig, Spin } from '@arco-design/web-vue'
+import { alert } from './notify'
 
 /**
  * 函数节流
@@ -53,19 +54,22 @@ export function openFullLoading(
   laodingTips?: string,
   config?: ModalConfig,
 ): ModalReturn {
-  return Modal.info({
-    hideTitle: true,
-    content: () => h(Spin, { size: 50, tip: laodingTips }),
-    modalClass: 'full-loading-modal',
-    bodyStyle: { padding: 0 },
-    maskStyle: { fontSize: '16px' },
-    popupContainer: container,
-    // 此处必须要显式的声明true，不然不能挂载到指定的container上
-    renderToBody: true,
-    maskClosable: false,
-    escToClose: false,
-    ...config,
-  })
+  return alert(
+    {
+      hideTitle: true,
+      content: () => h(Spin, { size: 50, tip: laodingTips }),
+      modalClass: 'full-loading-modal',
+      bodyStyle: { padding: 0 },
+      maskStyle: { fontSize: '16px' },
+      popupContainer: container,
+      // 此处必须要显式的声明true，不然不能挂载到指定的container上
+      renderToBody: true,
+      maskClosable: false,
+      escToClose: false,
+      ...config,
+    },
+    'info',
+  )
 }
 
 /**

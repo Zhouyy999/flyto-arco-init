@@ -1,8 +1,9 @@
 import { h } from 'vue'
-import { Modal, Message, ButtonProps } from '@arco-design/web-vue'
+import { ButtonProps } from '@arco-design/web-vue'
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { StandardHttpResponse, StandardRequestConfig } from '@types'
 import { useLayoutLoading } from '@/hooks/layout-loading'
+import { notify, alert } from './notify'
 
 const SUCCESS_CODE = 0
 const DEFAULT_AXIOS_CONFIG: AxiosRequestConfig = {
@@ -38,28 +39,34 @@ function showErrTips(errMsg: string, type: 'then' | 'catch') {
     status: 'danger',
   }
 
-  Modal.error({
-    title: `${typeLable}提示`,
-    content: () => tipsVNode,
-    okText: '确认',
-    okButtonProps: confirmBtnProps,
-    cancelText: '查看详细',
-    maskClosable: false,
-    escToClose: false,
-    modalClass: 'req-error-modal',
-    hideCancel: !isLongMsg,
-    onCancel: () => {
-      Modal.error({
-        title: `${typeLable}提示`,
-        content: errMsg,
-        okText: '确认',
-        okButtonProps: confirmBtnProps,
-        maskClosable: false,
-        escToClose: false,
-        modalClass: 'req-error-modal',
-      })
+  alert(
+    {
+      title: `${typeLable}提示`,
+      content: () => tipsVNode,
+      okText: '确认',
+      okButtonProps: confirmBtnProps,
+      cancelText: '查看详细',
+      maskClosable: false,
+      escToClose: false,
+      modalClass: 'req-error-modal',
+      hideCancel: !isLongMsg,
+      onCancel: () => {
+        alert(
+          {
+            title: `${typeLable}提示`,
+            content: errMsg,
+            okText: '确认',
+            okButtonProps: confirmBtnProps,
+            maskClosable: false,
+            escToClose: false,
+            modalClass: 'req-error-modal',
+          },
+          'error',
+        )
+      },
     },
-  })
+    'error',
+  )
 }
 
 // 全局遮罩层处理
@@ -124,7 +131,7 @@ export function createRequest<D = any, T = StandardHttpResponse<D>>(
 
         if (data.Code === SUCCESS_CODE && data.Success) {
           if (!ignoreSuccessMsg) {
-            Message.success(message || '成功')
+            notify(message || '成功', 'success')
           }
         } else if (!ignoreErrorMsg) {
           showErrTips(message || '错误，请联系相关人员！', 'then')

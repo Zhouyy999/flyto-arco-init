@@ -63,12 +63,12 @@
 <script lang="ts" setup>
   import { ref, reactive } from 'vue'
   import { useRouter } from 'vue-router'
-  import { Message } from '@arco-design/web-vue'
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
   import { useStorage } from '@vueuse/core'
   import useLoading from '@/hooks/loading'
-  import useUser from '@hooks/user'
+  import useUser from '@/hooks/user'
   import type { LoginData } from '@types'
+  import { notify } from '@utils'
 
   const router = useRouter()
   const errorMessage = ref('')
@@ -105,7 +105,7 @@
             ...othersQuery,
           },
         })
-        Message.success('欢迎使用飞驼……')
+        notify('登录成功，欢迎使用飞驼……', 'success')
         const { rememberPassword } = loginConfig.value
         const { username, password } = values
         // 实际生产环境需要进行加密存储。
