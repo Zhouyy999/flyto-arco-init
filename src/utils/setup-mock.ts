@@ -1,3 +1,4 @@
+import { StandardHttpResponse } from '@types'
 import debug from './env'
 
 export default ({ mock, setup }: { mock?: boolean; setup: () => void }) => {
@@ -6,20 +7,24 @@ export default ({ mock, setup }: { mock?: boolean; setup: () => void }) => {
   }
 }
 
-export const successResponseWrap = (data: unknown) => {
+export const successResponseWrap = (data: unknown): StandardHttpResponse => {
   return {
-    data,
-    status: 'ok',
-    msg: '请求成功',
-    code: 20000,
+    Data: data,
+    Success: true,
+    Message: '请求成功',
+    Code: 0,
   }
 }
 
-export const failResponseWrap = (data: unknown, msg: string, code = 50000) => {
+export const failResponseWrap = (
+  data: unknown,
+  msg: string,
+  code = 1,
+): StandardHttpResponse => {
   return {
-    data,
-    status: 'fail',
-    msg,
-    code,
+    Data: data,
+    Success: false,
+    Message: msg || '请求失败',
+    Code: code || 1,
   }
 }

@@ -19,8 +19,8 @@
 <script lang="ts" setup>
   import { PropType, computed } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { useTabBarStore } from '@/store'
-  import type { TagProps } from '@/types'
+  import { useTabBarStore } from '@store'
+  import type { TagProps } from '@types'
 
   const props = defineProps({
     itemData: {

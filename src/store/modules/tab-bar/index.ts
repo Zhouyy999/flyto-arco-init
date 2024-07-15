@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 import { defineStore } from 'pinia'
 import { DEFAULT_ROUTE } from '@/router/constants'
-import { TagProps } from '@/types'
+import { TagProps } from '@types'
 
 const formatTag = (route: RouteLocationNormalized): TagProps => {
   const { name, meta, fullPath, query } = route

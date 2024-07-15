@@ -42,6 +42,14 @@ export default defineConfig({
         find: '@enum',
         replacement: resolve(__dirname, '../src/enum'),
       },
+      {
+        find: '@utils',
+        replacement: resolve(__dirname, '../src/utils'),
+      },
+      {
+        find: '@request',
+        replacement: resolve(__dirname, '../src/utils/request'),
+      },
     ],
     extensions: ['.ts', '.js'],
   },

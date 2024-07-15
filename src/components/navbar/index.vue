@@ -150,7 +150,7 @@
 <script lang="ts" setup>
   import { computed, ref, inject } from 'vue'
   import { useDark, useToggle, useFullscreen } from '@vueuse/core'
-  import { useAppStore, useUserStore } from '@/store'
+  import { useAppStore, useUserStore } from '@store'
   import useUser from '@/hooks/user'
   import Menu from '@/components/menu/index.vue'
   import MessageBox from '../message-box/index.vue'

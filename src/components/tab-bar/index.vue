@@ -24,11 +24,8 @@
 <script lang="ts" setup>
   import { ref, onUnmounted } from 'vue'
   import { useRouter, useRoute, type RouteLocationNormalized } from 'vue-router'
-  import {
-    listenerRouteChange,
-    removeRouteListener,
-  } from '@/utils/route-listener'
-  import { useTabBarStore } from '@/store'
+  import { listenerRouteChange, removeRouteListener } from '@utils'
+  import { useTabBarStore } from '@store'
   import { RELOAD_ROUTE_NAME } from '@/router/constants'
   import TabItem from './tab-item.vue'
   import TabOperation from './tab-operation.vue'

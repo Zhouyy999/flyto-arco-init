@@ -1,10 +1,7 @@
 import Mock from 'mockjs'
-import setupMock, {
-  successResponseWrap,
-  failResponseWrap,
-} from '@/utils/setup-mock'
+import { setupMock, successResponseWrap, failResponseWrap } from '@utils'
 
-import { MockParams } from '@/types/mock'
+import { MockParams } from '@types'
 
 const userInfo = {
   sysno: 1000,

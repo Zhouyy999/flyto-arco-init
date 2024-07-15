@@ -2,8 +2,8 @@ import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import defaultSettings from '@/config/settings'
 import { getMenuList } from '@/api/user'
-import { AppState } from '@/types'
-import { formatListToMenus } from '@/utils/auth'
+import { AppState } from '@types'
+import { formatListToMenus } from '@utils'
 import { MAIN_ROUTE_NAME } from '@/router/constants'
 
 export default defineStore('app', () => {
@@ -35,7 +35,8 @@ export default defineStore('app', () => {
 
   // 获取服务端的角色权限页面
   async function getServerMenu() {
-    appData.serverAuthList = (await getMenuList()).data
+    appData.serverAuthList = await (await getMenuList()).Data
+
     appData.menuList = [
       // 添加主页
       {

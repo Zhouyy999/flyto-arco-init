@@ -36,7 +36,7 @@ export default defineStore('user', () => {
     Object.assign(userInfo, initUserInfo)
   }
   async function updateUserInfo() {
-    const data = (await getUserInfo()).data as UserInfo
+    const data = (await getUserInfo()).Data
     setUserInfo(data)
   }
 

@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
   import { ref, computed, provide, onMounted } from 'vue'
-  import { useAppStore } from '@/store'
+  import { useAppStore } from '@store'
   import NavBar from '@/components/navbar/index.vue'
   import Menu from '@/components/menu/index.vue'
   import Footer from '@/components/footer/index.vue'

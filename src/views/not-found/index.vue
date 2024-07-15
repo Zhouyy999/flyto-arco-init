@@ -11,7 +11,7 @@
 
 <script lang="tsx" setup>
   import { useRouter } from 'vue-router'
-  import { useTabBarStore } from '@/store'
+  import { useTabBarStore } from '@store'
   import { getCurrentInstance, ref } from 'vue'
   import { ModalReturn } from '@arco-design/web-vue'
 

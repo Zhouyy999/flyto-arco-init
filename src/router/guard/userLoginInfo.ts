@@ -1,8 +1,9 @@
 import type { Router } from 'vue-router'
 import NProgress from 'nprogress' // progress bar
 
-import { useUserStore } from '@/store'
+import { useUserStore } from '@store'
 import useUser from '@/hooks/user'
+import { LOGIN_ROUTE_NAME } from '../constants'
 
 export default function setupUserLoginInfoGuard(router: Router) {
   router.beforeEach(async (to, _from, next) => {
@@ -28,8 +29,9 @@ export default function setupUserLoginInfoGuard(router: Router) {
         next()
       } catch (_e) {
         next({
-          name: 'login',
+          name: LOGIN_ROUTE_NAME,
         })
+        NProgress.done()
       }
     }
   })

@@ -21,7 +21,7 @@
   import { computed } from 'vue'
   import { Message } from '@arco-design/web-vue'
   import { useClipboard } from '@vueuse/core'
-  import { useAppStore } from '@/store'
+  import { useAppStore } from '@store'
   import Block from './block.vue'
 
   const emit = defineEmits(['cancel'])

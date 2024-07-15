@@ -8,7 +8,8 @@
       />
       <div class="logo-text">飞驼xxxx</div>
     </div>
-    <LoginBanner ref="elRef" />
+
+    <LoginBanner />
     <div class="content">
       <div class="content-inner">
         <LoginForm />
@@ -21,20 +22,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { testApi } from '@/api/user'
-
-  import { ref } from 'vue'
-  import { openFullLoading } from '@/utils'
   import Footer from '@/components/footer/index.vue'
   import LoginBanner from './components/banner.vue'
   import LoginForm from './components/login-form.vue'
-
-  const elRef = ref()
-
-  setTimeout(async () => {
-    openFullLoading(elRef.value.$el)
-    // await testApi()
-  }, 100)
 </script>
 
 <style lang="less" scoped>

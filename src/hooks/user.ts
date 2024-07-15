@@ -2,8 +2,8 @@ import { useRouter } from 'vue-router'
 import { type LoginData } from '@types'
 import { login as userLogin, logout as userLogout } from '@/api/user'
 
-import { useUserStore, useAppStore } from '@/store'
-import { removeRouteListener } from '@/utils/route-listener'
+import { useUserStore, useAppStore } from '@store'
+import { removeRouteListener } from '@utils'
 
 export default function useUser() {
   const router = useRouter()

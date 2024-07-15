@@ -1,10 +1,9 @@
 <script lang="tsx">
   import { defineComponent, ref, h, compile, computed } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useAppStore } from '@/store'
-  import { listenerRouteChange } from '@/utils/route-listener'
-  import { openWindow, regexUrl } from '@/utils'
-  import { AppMenu } from '@/types'
+  import { useAppStore } from '@store'
+  import { openWindow, regexUrl, listenerRouteChange } from '@utils'
+  import { AppMenu } from '@types'
 
   export default defineComponent({
     emit: ['collapse'],

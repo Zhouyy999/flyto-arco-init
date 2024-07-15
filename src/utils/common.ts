@@ -1,6 +1,5 @@
 import { h } from 'vue'
 import { Modal, ModalReturn, ModalConfig, Spin } from '@arco-design/web-vue'
-import { RenderContent } from '@arco-design/web-vue/es/_utils/types'
 
 /**
  * 函数节流
@@ -43,6 +42,7 @@ export function debounce(fn, time = 1000) {
 
 /**
  * 打开一个挂载在指定容器下并且铺满容器的loading层
+ * 注意：如果是需要在全局下打开一个loading层这种类似的，需要对一个框架组件进行loading，请参考hooks中warp-loading针对全局的写法
  * @param {String | HTMLElement} container: 指定容器
  * @param {String} laodingTips: 提示语
  * @param {ModalConfig} config: 配置项
@@ -57,6 +57,8 @@ export function openFullLoading(
     hideTitle: true,
     content: () => h(Spin, { size: 50, tip: laodingTips }),
     modalClass: 'full-loading-modal',
+    bodyStyle: { padding: 0 },
+    maskStyle: { fontSize: '16px' },
     popupContainer: container,
     // 此处必须要显式的声明true，不然不能挂载到指定的container上
     renderToBody: true,

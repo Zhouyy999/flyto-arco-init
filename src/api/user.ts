@@ -1,5 +1,5 @@
 import axios from 'axios'
-import request from '@/utils/request'
+import request from '@request'
 import { UserInfo, LoginData, ServerAuth } from '@types'
 
 export function testApi() {
@@ -22,9 +22,9 @@ export function logout() {
 }
 
 export function getUserInfo() {
-  return axios.post<UserInfo>('/api/user/info')
+  return request<UserInfo>('/api/user/info')
 }
 
 export function getMenuList() {
-  return axios.post<ServerAuth[]>('/api/user/menu')
+  return request<ServerAuth[]>('/api/user/menu')
 }

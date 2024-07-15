@@ -12,13 +12,11 @@
     "paths": {
       "@/*": ["src/*"],
       "@types": ["src/types"],
-      "@types/*": ["src/types/*"],
       "@store": ["src/store"],
-      "@store/*": ["src/store/*"],
       "@hooks": ["src/hooks"],
-      "@hooks/*": ["src/hooks/*"],
       "@enum": ["src/enum"],
-      "@enum/*": ["src/enum/*"]
+      "@utils": ["src/utils"],
+      "@request": ["src/utils/request"]
     },
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,

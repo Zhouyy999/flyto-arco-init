@@ -33,8 +33,8 @@
     IconSwap,
     IconFolderDelete,
   } from '@arco-design/web-vue/es/icon'
-  import { useTabBarStore } from '@/store'
-  import { TagProps } from '@/types'
+  import { useTabBarStore } from '@store'
+  import { TagProps } from '@types'
   import { useRoute, useRouter } from 'vue-router'
   import { DEFAULT_ROUTE_NAME } from '@/router/constants'
 
