@@ -1,6 +1,6 @@
 <template>
   <div class="tab-bar-container">
-    <a-affix ref="affixRef" :offset-top="60">
+    <a-affix :offset-top="60">
       <div class="tab-bar-box">
         <div class="tab-bar-scroll">
           <div class="tags-wrap">
@@ -13,7 +13,6 @@
           </div>
         </div>
         <div class="tag-bar-operation">
-          <IconRefresh @click="refreshCurPage"></IconRefresh>
           <TabOperation></TabOperation>
         </div>
       </div>
@@ -22,19 +21,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onUnmounted } from 'vue'
-  import { useRouter, useRoute, type RouteLocationNormalized } from 'vue-router'
+  import { onUnmounted } from 'vue'
+  import { type RouteLocationNormalized } from 'vue-router'
   import { listenerRouteChange, removeRouteListener } from '@utils'
   import { useTabBarStore } from '@store'
-  import { RELOAD_ROUTE_NAME } from '@/router/constants'
   import TabItem from './tab-item.vue'
   import TabOperation from './tab-operation.vue'
 
   const tabBarStore = useTabBarStore()
-  const route = useRoute()
-  const router = useRouter()
-
-  const affixRef = ref()
 
   listenerRouteChange((route: RouteLocationNormalized) => {
     if (
@@ -44,15 +38,6 @@
       tabBarStore.addTabTag(route)
     }
   }, true)
-
-  async function refreshCurPage() {
-    await router.push({
-      name: RELOAD_ROUTE_NAME,
-      params: {
-        path: route.fullPath,
-      },
-    })
-  }
 
   onUnmounted(() => {
     removeRouteListener()
@@ -91,13 +76,6 @@
           }
         }
       }
-    }
-
-    .tag-bar-operation {
-      width: 60px;
-      height: 32px;
-      display: flex;
-      align-items: center;
     }
   }
 </style>

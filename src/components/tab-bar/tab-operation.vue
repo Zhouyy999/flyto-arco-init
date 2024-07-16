@@ -1,27 +1,30 @@
 <template>
-  <a-dropdown
-    v-model:popup-visible="dropVisible"
-    :popup-max-height="false"
-    position="tr"
-    @select="actionSelect"
-    @popup-visible-change="onPopupVisibleChange"
-  >
-    <icon-apps
-      class="operation-icon"
-      :class="dropVisible ? 'operation-icon--active' : ''"
-    />
-    <template #content>
-      <a-doption
-        v-for="item in operationList"
-        :key="item.action"
-        :value="item.action"
-        :disabled="item.disabled || false"
-      >
-        <component :is="item.icon"></component>
-        <span>{{ item.label }}</span>
-      </a-doption>
-    </template>
-  </a-dropdown>
+  <div class="tag-bar-operation">
+    <IconRefresh class="operation-icon" @click="refreshCurPage"></IconRefresh>
+    <a-dropdown
+      v-model:popup-visible="dropVisible"
+      :popup-max-height="false"
+      position="tr"
+      @select="actionSelect"
+      @popup-visible-change="onPopupVisibleChange"
+    >
+      <icon-apps
+        class="operation-icon"
+        :class="dropVisible ? 'operation-icon--active' : ''"
+      />
+      <template #content>
+        <a-doption
+          v-for="item in operationList"
+          :key="item.action"
+          :value="item.action"
+          :disabled="item.disabled || false"
+        >
+          <component :is="item.icon"></component>
+          <span>{{ item.label }}</span>
+        </a-doption>
+      </template>
+    </a-dropdown>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -36,14 +39,22 @@
   import { useTabBarStore } from '@store'
   import { TagProps } from '@types'
   import { useRoute, useRouter } from 'vue-router'
-  import { DEFAULT_ROUTE_NAME } from '@/router/constants'
+  import { DEFAULT_ROUTE_NAME, RELOAD_ROUTE_NAME } from '@/router/constants'
 
   const tabBarStore = useTabBarStore()
   const route = useRoute()
   const router = useRouter()
 
-  const dropVisible = ref(false)
+  async function refreshCurPage() {
+    await router.push({
+      name: RELOAD_ROUTE_NAME,
+      params: {
+        path: route.fullPath,
+      },
+    })
+  }
 
+  const dropVisible = ref(false)
   // 在下拉框显示时，才计算当前标签数据
   const curTabTag = ref<{
     idx: number
@@ -61,7 +72,6 @@
       tag: tabBarStore.tagList[idx],
     }
   }
-
   // 下拉操作项列表
   const operationList: {
     label: string
@@ -123,12 +133,21 @@
 </script>
 
 <style scoped>
-  .operation-icon {
-    cursor: pointer;
-    transform: rotate(0deg);
-    transition: transform 0.3s ease;
-    &.operation-icon--active {
-      transform: rotate(180deg);
+  .tag-bar-operation {
+    width: 60px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    .operation-icon {
+      cursor: pointer;
+      transform: rotate(0deg);
+      transition: transform 0.3s ease;
+      &.operation-icon--active {
+        transform: rotate(180deg);
+      }
+      + .operation-icon {
+        margin-left: 10px;
+      }
     }
   }
 </style>
