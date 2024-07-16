@@ -1,4 +1,5 @@
 import axios from 'axios'
+import request from '@request'
 
 export interface MessageRecord {
   id: number
@@ -14,7 +15,9 @@ export interface MessageRecord {
 export type MessageListType = MessageRecord[]
 
 export function queryMessageList() {
-  return axios.post<MessageListType>('/api/message/list')
+  return request<MessageListType>('/api/message/list', {
+    openLoading: false,
+  })
 }
 
 interface MessageStatus {

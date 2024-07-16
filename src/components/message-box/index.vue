@@ -64,7 +64,8 @@
   async function fetchSourceData() {
     setLoading(true)
     try {
-      const { data } = await queryMessageList()
+      const data = await (await queryMessageList()).Data
+
       messageData.messageList = data
     } catch (err) {
       // you can report use errorHandler or other

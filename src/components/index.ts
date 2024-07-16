@@ -12,8 +12,7 @@ import {
 import Chart from './chart/index.vue'
 import Breadcrumb from './breadcrumb/index.vue'
 
-// Manually introduce ECharts modules to reduce packing size
-
+// 手动引入ECharts模块以减小包装尺寸
 use([
   CanvasRenderer,
   BarChart,

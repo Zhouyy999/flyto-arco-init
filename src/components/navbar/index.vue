@@ -70,8 +70,12 @@
         <a-popover
           trigger="click"
           :arrow-style="{ display: 'none' }"
-          :content-style="{ padding: 0, minWidth: '400px' }"
+          :content-style="{
+            padding: 0,
+            width: '400px',
+          }"
           content-class="message-popover"
+          position="bottom"
         >
           <div ref="refBtn" class="ref-btn"></div>
           <template #content>
