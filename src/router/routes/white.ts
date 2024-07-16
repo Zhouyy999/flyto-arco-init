@@ -11,6 +11,10 @@ import {
 export const LOGIN_ROUTE: RouteRecordRaw = {
   path: '/login',
   name: LOGIN_ROUTE_NAME,
+  meta: {
+    noTabBar: true,
+    ignoreCache: true,
+  },
   component: () => import('@/views/login/index.vue'),
 }
 

@@ -10,7 +10,7 @@ export default function setupUserLoginInfoGuard(router: Router) {
     NProgress.start()
 
     // 只要是登录页面，直接放行，并且取消登录
-    if (to.name === 'login') {
+    if (to.name === LOGIN_ROUTE_NAME) {
       useUser().logout()
       next()
     } else {

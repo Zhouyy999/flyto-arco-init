@@ -149,15 +149,16 @@
 
 <script lang="ts" setup>
   import { computed, ref, inject } from 'vue'
+  import { useRouter } from 'vue-router'
   import { useDark, useToggle, useFullscreen } from '@vueuse/core'
   import { useAppStore, useUserStore } from '@store'
-  import useUser from '@/hooks/user'
   import Menu from '@/components/menu/index.vue'
+  import { LOGIN_ROUTE_NAME } from '@/router/constants'
   import MessageBox from '../message-box/index.vue'
 
+  const router = useRouter()
   const appStore = useAppStore()
   const userStore = useUserStore()
-  const { logout } = useUser()
   const { isFullscreen, toggle: toggleFullScreen } = useFullscreen()
   const avatar = computed(() => {
     return userStore.userInfo.avatar
@@ -196,7 +197,7 @@
     refBtn.value.dispatchEvent(event)
   }
   const handleLogout = () => {
-    logout()
+    router.push({ name: LOGIN_ROUTE_NAME })
   }
 
   const toggleDrawerMenu = inject('toggleDrawerMenu') as () => void

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import request from '@request'
 import { UserInfo, LoginData, ServerAuth } from '@types'
 
@@ -14,17 +13,23 @@ export function testApi() {
 }
 
 export function login(data: LoginData) {
-  return axios.post<UserInfo>('/api/user/login', data)
+  return request<UserInfo>('/api/user/login', {
+    data,
+  })
 }
 
 export function logout() {
-  return axios.post('/api/user/logout')
+  return request('/api/user/logout')
 }
 
 export function getUserInfo() {
-  return request<UserInfo>('/api/user/info')
+  return request<UserInfo>('/api/user/info', {
+    openLoading: false,
+  })
 }
 
 export function getMenuList() {
-  return request<ServerAuth[]>('/api/user/menu')
+  return request<ServerAuth[]>('/api/user/menu', {
+    openLoading: false,
+  })
 }

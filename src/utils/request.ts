@@ -77,106 +77,96 @@ const closeLoading = () => {
   // 如果有两个连续的请求，这样动画就不会中断，体验感会比较好
   tiemerId = setTimeout(() => {
     warpLoading.toggleGlobalLoading(false)
-  }, 50)
+  }, 10)
 }
 
-/**
- * 创建一个经过对拦截器进行了一些逻辑处理的请求方法，此方法创建的实例只会返回.data里面的数据
- * @template D 返回的值中，data的类型（例如StandardHttpResponse中的Data）
- * @template T 返回值的类型，默认为StandardHttpResponse
- * @param ignoreStandardHandler 是否忽略标准返回类型的处理（如果定义了泛型T，则此项必须为true）
- */
-export function createRequest<D = any, T = StandardHttpResponse<D>>(
-  ignoreStandardHandler = false,
-) {
-  const instance = axios.create(DEFAULT_AXIOS_CONFIG)
-
-  // 在发送请求之前做些什么 (后期可以对请求参数进行处理)
-  instance.interceptors.request.use((config: StandardRequestConfig) => {
-    // 合并默认值
-    Object.assign(config, {
-      openLoading: config.openLoading ?? true,
-      method: config.method ?? 'POST',
-    })
-
-    // 打开遮罩
-    if (config.openLoading) {
-      // 如果下一个请求马上进来了，则清除掉计时器
-      clearTimeout(tiemerId)
-      warpLoading.toggleGlobalLoading(true)
-    }
-
-    if (config.method === 'get' || config.method === 'GET') {
-      config.params = config.data
-    }
-
-    return config
+// 创建一个经过对拦截器进行了一些逻辑处理的请求方法
+export const instance = axios.create(DEFAULT_AXIOS_CONFIG)
+// 在发送请求之前做些什么 (后期可以对请求参数进行处理)
+instance.interceptors.request.use((config: StandardRequestConfig) => {
+  // 合并默认值
+  Object.assign(config, {
+    openLoading: config.openLoading ?? true,
+    method: config.method ?? 'POST',
   })
 
-  instance.interceptors.response.use(
-    (
-      response: AxiosResponse<T> & {
-        config: StandardRequestConfig
-      },
-    ) => {
-      closeLoading()
+  // 打开遮罩
+  if (config.openLoading) {
+    // 如果下一个请求马上进来了，则清除掉计时器
+    clearTimeout(tiemerId)
+    warpLoading.toggleGlobalLoading(true)
+  }
 
-      const { config } = response
-      const { ignoreErrorMsg = false, ignoreSuccessMsg = true } = config
+  if (config.method === 'get' || config.method === 'GET') {
+    config.params = config.data
+  }
 
-      // 定义一个标准的错误处理
-      if (!ignoreStandardHandler) {
-        const data = response.data as StandardHttpResponse<D>
-        const message = data.Message ? String(data.Message) : ''
+  return config
+})
+instance.interceptors.response.use(
+  (
+    response: AxiosResponse & {
+      config: StandardRequestConfig
+    },
+  ) => {
+    closeLoading()
 
-        if (data.Code === SUCCESS_CODE && data.Success) {
-          if (!ignoreSuccessMsg) {
-            notify(message || '成功', 'success')
-          }
-        } else if (!ignoreErrorMsg) {
-          showErrTips(message || '错误，请联系相关人员！', 'then')
-          throw data
+    const { config } = response
+    const {
+      ignoreErrorMsg = false,
+      ignoreSuccessMsg = true,
+      ignoreStandardHandler = false,
+    } = config
+
+    // 定义一个标准的错误处理
+    if (!ignoreStandardHandler) {
+      const data = response.data as StandardHttpResponse<StandardHttpResponse>
+      const message = data.Message ? String(data.Message) : ''
+
+      if (data.Code === SUCCESS_CODE && data.Success) {
+        if (!ignoreSuccessMsg) {
+          notify(message || '成功', 'success')
         }
+      } else if (!ignoreErrorMsg) {
+        showErrTips(message || '错误，请联系相关人员！', 'then')
+        throw data
       }
+    }
 
-      return response
-    },
-    err => {
-      closeLoading()
+    return response
+  },
+  err => {
+    closeLoading()
 
-      if (err.config.ignoreErrorMsg) {
-        showErrTips(
-          err.Message ? String(err.Message) : '错误，请联系相关人员！',
-          'catch',
-        )
-      }
+    if (err.config.ignoreErrorMsg) {
+      showErrTips(
+        err.Message ? String(err.Message) : '错误，请联系相关人员！',
+        'catch',
+      )
+    }
 
-      return err
-    },
-  )
+    return err
+  },
+)
 
-  return instance
-}
-
+async function request<D = any, T = StandardHttpResponse<D>>(
+  url: string,
+  config?: StandardRequestConfig,
+): Promise<T>
+async function request<D = any, T = StandardHttpResponse<D>>(
+  config: StandardRequestConfig,
+): Promise<T>
 /**
- * 返回值为 StandardHttpResponse (约定的标准返回类型)类型的请求方法
- * 泛型 T ，定义 StandardHttpResponse.Data 的类型
+ * 一个标准的，通用的请求方法
+ * @template D 返回的值中，data的类型（例如StandardHttpResponse中的Data）
+ * @template T 返回值的类型，默认为StandardHttpResponse
  * @param urlOrConfig 请求地址或者请求配置
  * @param config 请求配置（仅在 urlOrConfig 为请求地址时生效）
  */
-async function request<T>(
-  url: string,
-  config?: StandardRequestConfig,
-): Promise<StandardHttpResponse<T>>
-async function request<T>(
-  config: StandardRequestConfig,
-): Promise<StandardHttpResponse<T>>
-async function request<T>(
+async function request<D = any, T = StandardHttpResponse<D>>(
   urlOrConfig: string | StandardRequestConfig,
   config?: StandardRequestConfig,
-): Promise<StandardHttpResponse<T>> {
-  const req = createRequest<T>()
-
+): Promise<T> {
   const params: StandardRequestConfig =
     typeof urlOrConfig === 'string'
       ? {
@@ -186,7 +176,7 @@ async function request<T>(
         }
       : urlOrConfig
 
-  const res: StandardHttpResponse<T> = (await req(params)).data
+  const res: T = (await instance(params)).data
 
   return res
 }

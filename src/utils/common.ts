@@ -3,45 +3,6 @@ import { ModalReturn, ModalConfig, Spin } from '@arco-design/web-vue'
 import { alert } from './notify'
 
 /**
- * 函数节流
- * @param {Function} fn: 函数
- * @param {Number} time: 节流时间
- * @return {Function} 处理后的函数
- */
-export function throttle(fn: (...args: any[]) => any, time = 1000) {
-  let flag = true
-
-  // eslint-disable-next-line func-names
-  return function (...args) {
-    if (flag) {
-      flag = false
-      fn(...args)
-      setTimeout(() => {
-        flag = true
-      }, time)
-    }
-  }
-}
-
-/**
- * 函数防抖
- * @param {Function} fn: 函数
- * @param {Number} time: 防抖时间
- * @return {Function} 处理后的函数
- */
-export function debounce(fn, time = 1000) {
-  let timeLock: NodeJS.Timeout
-
-  // eslint-disable-next-line func-names
-  return function (...args) {
-    clearTimeout(timeLock)
-    timeLock = setTimeout(() => {
-      fn(...args)
-    }, time)
-  }
-}
-
-/**
  * 打开一个挂载在指定容器下并且铺满容器的loading层
  * 注意：如果是需要在全局下打开一个loading层这种类似的，需要对一个框架组件进行loading，请参考hooks中warp-loading针对全局的写法
  * @param {String | HTMLElement} container: 指定容器
@@ -70,6 +31,45 @@ export function openFullLoading(
     },
     'info',
   )
+}
+
+/**
+ * 函数节流（一定时间内，只执行一次）
+ * @param {Function} fn: 函数
+ * @param {Number} time: 节流时间
+ * @return {Function} 处理后的函数
+ */
+export function throttle(fn: (...args: any[]) => any, time = 1000) {
+  let flag = true
+
+  // eslint-disable-next-line func-names
+  return function (...args) {
+    if (flag) {
+      flag = false
+      fn(...args)
+      setTimeout(() => {
+        flag = true
+      }, time)
+    }
+  }
+}
+
+/**
+ * 函数防抖（多次调用只执行最后一次）
+ * @param {Function} fn: 函数
+ * @param {Number} time: 防抖时间
+ * @return {Function} 处理后的函数
+ */
+export function debounce(fn: (...args: any[]) => any, time = 1000) {
+  let timeLock: NodeJS.Timeout
+
+  // eslint-disable-next-line func-names
+  return function (...args) {
+    clearTimeout(timeLock)
+    timeLock = setTimeout(() => {
+      fn(...args)
+    }, time)
+  }
 }
 
 /**
